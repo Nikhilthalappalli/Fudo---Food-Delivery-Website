@@ -1,0 +1,85 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+          
+          {% comment %} {% if user.is_authenticated%} {% endcomment %}
+          <nav class="navbar col-mg-6 me-auto">
+            <!-- Card Dark -->
+<div class="card ms-5 w-50 border-0" style="background-image:url()">
+
+  <div class="row pe-5 py-3 ">
+    <div class="d-flex">
+        {% comment %} <a class="nav-link" href="res_ins"><button type="button" class="btn btn-success" data-mdb-ripple-color="dark">Restaurant Category</button></a> {% endcomment %}
+        <a class="nav-link" href="res_ins"><button type="button" class="btn btn-primary ms-4" data-mdb-ripple-color="dark">Menu Item Category</button></a>
+    </div>
+  </div>
+  </div>
+    <!-- Card image -->
+
+  
+  </div>
+  <!-- Card Dark -->
+
+  <div class="row pe-5 py-3 ms-auto ">
+    <div class="d-flex pe-4">
+        <a class="nav-link" href="admin_cat_ins"><button type="button" class="btn btn-success ms-auto " data-mdb-ripple-color="dark">Insert A New Item</button></a>
+    </div>
+  </div>
+        </nav>
+        <div class="container ">
+          <table class="table ">
+            <thead class="table-dark">
+              <tr>
+                {% comment %} <th scope="col">Id</th> {% endcomment %}
+                <th scope="col"> </th>
+                <th scope="col">Name</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for dis in category %} 
+              <tr class="table-info">
+                {% comment %} {% if dis.is_superuser %} {% endcomment %}
+                
+                {% comment %} {% else %} {% endcomment %}
+                <td></td>
+                <td>{{dis.cat_name}}</td>
+                <td><a href="edit/{{dis.id}}"><button type="button" class="btn btn-primary">Edit</button></a></td>
+                <td><button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#Modal1{{dis.id}}">Delete</button></td>
+              </tr>
+              {% comment %} {% endif %} {% endcomment %}
+              <div class="modal fade" id="Modal1{{dis.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Delete Category</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      Are You Sure...
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <a href="admin_cat_delete/{{dis.id}}"><button type="button" class="btn btn-danger">Confirm</button></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+               {% endfor %} 
+            </tbody>
+          </table>
+        </div>
+        {% endblock content %}
+          {% comment %} {% else %} {% endcomment %}
+        {% comment %} {% endif %}  {% endcomment %}
+        {% block js %}
+        {% if messages %}
+        {% for msg in messages %}
+        
+  <script>
+      swal('{{msg}}')
+  </script>
+  {% endfor %}
+    {% endif %}
+    {% endblock js %}

@@ -1,0 +1,206 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+
+    {% if user.is_authenticated%}
+    <nav class="navbar col-mg-6 pe-4">
+      <!-- Card Dark -->
+      <h2 class="ms-5">Sales Report</h2>
+      <!-- Card Dark -->
+    </nav>
+   
+  <div class="container bg-dark text-white mb-2 rounded-3">
+    <div class="row ">
+        <div class="col border-1 border-white">
+            <form action="admin_sales_filter" method="POST">
+                {% csrf_token %}
+                <label for="start_date">Start Date</label>
+                <input type="date" class="form-control" style="width:80%;" id="start_date" name="start_date" >
+                <label for ="end_date">End Date</label>
+                <input type="date" class="form-control" style="width:80%;" id="end_date" name="end_date" >
+                <button type="submit" id="generate" class="btn btn-success w-25 mt-2 mb-2">Filter</button>
+            </form>
+        </div>
+        <div class="col">
+            <form action="admin_sales_filter_year" method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                <label for="start_date">Enter Year</label>
+                <input type="text" class="form-control " style="width:100%;" id="date" name="date" >
+                    </div>
+                    <div class="col-md-6 mt-4 text-start">
+                <button type="submit" id="generate" class="btn btn-success">Filter With Year</button>
+                    </div>
+                </div>
+            </form>
+            <form action="admin_sales_filter_month" method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                <label for="start_date">Enter Month</label>
+                <input type="text" class="form-control " style="width:100%;" id="date" name="date" >
+                    </div>
+                    <div class="col-md-6 mt-4 text-start">
+                <button type="submit" id="generate" class="btn btn-success">Filter With Month</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+  </div>
+</div>
+{% if sales %}
+<div style="overflow-x:auto;">
+    <table class="table " id="myTable">
+      <thead class="table-dark">
+        <tr>
+          {% comment %}
+          <th scope="col">Id</th>
+          {% endcomment %}
+          <th scope="col"></th>
+          {% comment %}
+          <th scope="col">Order ID</th>
+          {% endcomment %}
+          <th scope="col">User</th>
+          <th scope="col">Restaurant</th>
+          <th scope="col">Address</th>
+          <th scope="col">Payment Mode</th>
+          <th scope="col">Grand Total</th>
+          <th scope="col">Food Status</th>
+          <th scope="col">Order Status</th>
+          {% comment %}
+          <th scope="col">Last Login</th>
+          {% endcomment %} {% comment %}
+          <th scope="col">Password</th>
+          {% endcomment %} {% comment %}
+          <th scope="col">Delete</th>
+          {% endcomment %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in sales %}
+        <tr class="table-info">
+          <td></td>
+          {% comment %}
+          <td>{{order.id}}</td>
+          {% endcomment %}
+          <td>{{order.user.name}}</td>
+          <td>{{order.restaurant.name}}</td>
+          <td>{{order.address.complete_address}}</td>
+          <td>{{order.payment}}<p>{% if order.status %}(pending){% else %}{%if not order.is_prepared and order.delivery_stat == 'Confirmed'%}(Refunded){% elif order.is_prepared and order.delivery_stat == 'Confirmed' %}(Not Refunded){% elif order.id_prepared and order.delivery_stat == 'Delivered' %}(Not Refunded){% else %}(Paid){% endif %}{% endif %}</p></td>
+          <td>{{order.grand_total}}</td>
+          {% if order.is_prepared %}
+          <td>
+            <button type="button" class="btn btn-success">Prepred</button>
+          </td>
+          {% else %}
+          <td>
+            <button type="button" class="btn btn-danger">Not Prepred</button>
+          </td>
+          {% endif %} {% if order.status %}
+          <td>Valid</td>
+          {% else %}
+          <td>Canceled</td>
+          {% endif %}
+        </tr>
+        <div
+          class="modal fade"
+          id="Modal1{{dis.id}}"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Block</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">Are You Sure...</div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <a href="block/{{dis.id}}"
+                  ><button type="button" class="btn btn-primary">
+                    Confirm
+                  </button></a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="modal fade"
+          id="Modal2{{dis.id}}"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">UnBlock User</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">Are You Sure...</div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <a href="unblock/{{dis.id}}"
+                  ><button type="button" class="btn btn-primary">
+                    Confirm
+                  </button></a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
+{% else %}
+<div class="container border border-dark border-3">
+<div class="text-center mt-3">
+<h2>The Is No Sales To Show</h2>
+</div>
+</div>
+{% endif %}
+    {% else %} {% endif %}
+    {% endblock content%}
+    {% block js %}
+    <script>
+      $(document).ready(function() {
+          $('#myTable').DataTable( {
+              dom: 'Bfrtip',
+              buttons: [
+                  'excel', 'pdf',
+              ]
+          } );
+    }
+    );
+  </script>
+  {% endblock js %}
+

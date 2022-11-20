@@ -1,0 +1,110 @@
+{% extends 'home_base.html' %}
+{% load static %}
+{% block content %}
+<style>
+@media only screen and (min-width: 768px) {
+    .for-small{
+      display:none;
+    }
+  }
+  @media only screen and (max-width: 600px) {
+    .for-big{
+      display:none;
+    }
+  }
+  </style>
+        <section class="for-big">
+        <h1 style="margin-left:130px">Edit Account</h1>
+        <form action="" enctype="multipart/form-data" method="POST">
+            {% csrf_token %}
+        <div class="container-fluid" style="margin:0px 0px 0px 250px">
+            <div class="row" >
+                <div class="col-6 border-0 mt-4">
+                <label class="mt-4 ms-4">Name :</label>
+                <input class="ms-2" type="text" name="name" value="{{details.name}}">
+            </div>
+            <div class="row">
+                <div class="col-2 ms-5 border-0 mt-4">
+                  <select class="form-select" name="place"  aria-label="Disabled select example">
+                    <option value={{details.place.id}}>{{details.place.name}}</option>
+                    {% for place in place %}
+                    <option value="{{place.id}}">{{place.name}}</option>
+                    {% endfor %}
+                  </select>
+            </div>
+            <div class="row">
+                <div class="col-6 border-0 mt-4">
+                <label class="mt-4 ms-4">Phone :</label>
+                <input class="ms-2" type="text" name="phone" value="{{details.phone}}">
+            </div>
+            <div class="row" >
+                <div class="col-6 border-0 mt-4">
+                <label class="mt-4 ms-4">Email :</label>
+                <input class="ms-2" type="email" name="email" value="{{details.email}}">
+            </div>
+            <div class="row">
+                <div class="col-3 ms-5 border-0 mt-4">
+                <label class="form-label" for="form3Example97">Image:</label>
+                <input type="file" id="form3Example97" name="image" class="form-control form-control-lg" />
+                </div>
+            </div>
+            <div class="row ms-5 ps-5" >
+                <div class="col-6 border-0 mt-4 ps-5 ms-5">
+                    <button type="submit" class="btn btn-warning">Save</button>
+            </div>
+        </div>
+    </form>
+</section>
+
+<section class="for-small">
+    <h1 style="">Edit Account</h1>
+    <form action="" enctype="multipart/form-data" method="POST">
+        {% csrf_token %}
+    <div class="container-fluid">
+        <div class="row" >
+            <div class="col-12 border-0 mt-4">
+            <label class="mt-4 ms-4">Name :</label>
+            <input class="ms-2" type="text" name="name" value="{{details.name}}">
+        </div>
+        <div class="row">
+            <div class="col-12 border-0 mt-4">
+              <select class="form-select" name="place"  aria-label="Disabled select example">
+                <option value=selected>Choose You Place</option>
+                {% for place in place %}
+                <option value="{{place.id}}">{{place.name}}</option>
+                {% endfor %}
+              </select>
+        </div>
+        <div class="row">
+            <div class="col-12 border-0 mt-4">
+            <label class="mt-4 ms-4">Phone :</label>
+            <input class="ms-2" type="text" name="phone" value="{{details.phone}}">
+        </div>
+        <div class="row" >
+            <div class="col-12 border-0 mt-4">
+            <label class="mt-4 ms-3">Email :</label>
+            <input class="ms-2" type="email" name="email" value="{{details.email}}">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 border-0 mt-4">
+                <label class="form-label" for="form3Example97">Image</label>
+                <input type="file" id="form3Example97" name="image" class="form-control form-control-lg" />
+                </div>
+        </div>
+        <div class="row ms-5 ps-5" >
+            <div class="col-12 border-0 mt-4 ps-5 ms-5">
+                <button type="submit" class="btn btn-warning">Save</button>
+        </div>
+    </div>
+</form>
+</section>
+{% endblock content %}
+
+{% block js %}
+{% for msg in messages %}
+<script>
+    swal('{{msg}}')
+</script>
+{% endfor %}
+{% endblock js %}

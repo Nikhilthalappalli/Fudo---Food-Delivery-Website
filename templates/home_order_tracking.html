@@ -1,0 +1,91 @@
+{% extends 'home_base.html' %}
+{% load static %}
+{% block content %}
+
+
+    <section>
+      <div class="text-center pb-4 pt-4"><h1>Track Your Order</h1></div>
+      {% if order.status %}
+      <div class="container text-center">
+      <div class="row">
+      <div class="col-md-3">
+        <span class="border border-white rounded">
+          <img  height=200 width=200 class="rounded-circle" src="https://img.freepik.com/free-vector/shopping-mobile-app-online-store-service-smartphone-application-internet-purchase-making-order-customer-cartoon-character-adding-product-cart_335657-2557.jpg?w=740&t=st=1667237923~exp=1667238523~hmac=ab9e8281340832a1bb87bd6366ead0755039d875089e73ee6a261632d529109e">
+          <div class="pt-3"><h4>Order Placed</h4></div>
+          <hr>
+          {% if order.status %}
+          <button type="button" class="btn btn-warning " style="width=500px;">
+          <img height=50 width=50 class="mt-2" src="https://cdn-icons-png.flaticon.com/512/1254/1254788.png?w=740&t=st=1667239799~exp=1667240399~hmac=57387968c3798307f490c92ec29ee9c5762b8536c4482322691e6df4eb28b5fe">
+          </button>
+          {% else %}
+
+          {% endif %}
+        </span>
+      </div>
+      <div class="col-md-3">
+        <span class="border border-white rounded">
+          <img  height=200 width=200 class="rounded-circle"  src="https://img.freepik.com/free-vector/chef-concept-illustration_114360-1894.jpg?w=740&t=st=1667239180~exp=1667239780~hmac=29852736cde91ce7d96cda21ef60f66de7c0149d402562ee1e3e1e02c1532ab8">
+          {% comment %} <img  height=200 width=200 class="rounded-circle"  src="https://img.freepik.com/free-vector/internet-cafe-interior-restaurant-pizzeria-bistro-canteen-isometric-composition-visitors-using-wi-fi-gadgets-vector-illustration_1284-19808.jpg?w=740&t=st=1667238950~exp=1667239550~hmac=a1d613533e72f6972d45b0c790ee168df02491dee341226be7d86f99429514b9"> {% endcomment %}
+            <div class="pt-3"><h4>Food Prepared</h4></div>
+            <hr>
+            {% if order.is_prepared %}
+          <button type="button" class="btn btn-warning " style="width=500px;">
+          <img height=50 width=50 class="mt-2" src="https://cdn-icons-png.flaticon.com/512/1254/1254788.png?w=740&t=st=1667239799~exp=1667240399~hmac=57387968c3798307f490c92ec29ee9c5762b8536c4482322691e6df4eb28b5fe">
+          </button>
+          {% else %}
+          <button type="button" class="btn btn-white " style="width=500px;">
+            <img height=50 width=50 class="mt-2" src="https://cdn-icons-png.flaticon.com/512/1254/1254788.png?w=740&t=st=1667239799~exp=1667240399~hmac=57387968c3798307f490c92ec29ee9c5762b8536c4482322691e6df4eb28b5fe">
+            </button>
+          {% endif %}
+        </span>
+      </div>
+      <div class="col-md-3">
+        <span class="border border-white rounded">
+          <img  height=200 width=200 class="rounded-circle"  src="https://img.freepik.com/free-vector/delivery-guy-motor-scooter-wearing-mask_23-2148498576.jpg?w=740&t=st=1667239427~exp=1667240027~hmac=d08ef4588b127a9cbe8e66896514fe4e7966b6e7c92b8257236e50f0dee947b9">
+          <div class="pt-3"><h4>Set To Delivery</h4></div>
+          <hr>
+          {% if order.delivery_stat == 'Out For Delivery' or order.delivery_stat == 'Delivered' %}
+          <button type="button" class="btn btn-warning" style="width=500px;">
+          <img height=50 width=50 class="mt-2" src="https://cdn-icons-png.flaticon.com/512/1254/1254788.png?w=740&t=st=1667239799~exp=1667240399~hmac=57387968c3798307f490c92ec29ee9c5762b8536c4482322691e6df4eb28b5fe">
+          </button>
+          {% else %}
+          <button type="button" class="btn btn-white" style="width=500px;">
+            <img height=50 width=50 class="mt-2" src="https://cdn-icons-png.flaticon.com/512/1254/1254788.png?w=740&t=st=1667239799~exp=1667240399~hmac=57387968c3798307f490c92ec29ee9c5762b8536c4482322691e6df4eb28b5fe">
+            </button>
+          {% endif %}
+        </span>
+      </div>
+      <div class="col-md-3">
+        <span class="border border-white rounded">
+          <img class="rounded-circle"  height=200 width=200 src="https://img.freepik.com/free-vector/people-healthy-food_24908-55174.jpg?w=740&t=st=1667238625~exp=1667239225~hmac=171ee0325c3501726e80579ee485128b39a626d50f4ec53eaaf730c9c2b274f5">
+          <div class="pt-3"><h4>Delivered</h4></div>
+          <hr>
+          {% if order.status and order.is_prepared and order.delivery_stat == 'Delivered' %}
+          <button type="button" class="btn btn-warning" style="width=500px;">
+          <img height=50 width=50 class="mt-2" src="https://cdn-icons-png.flaticon.com/512/1254/1254788.png?w=740&t=st=1667239799~exp=1667240399~hmac=57387968c3798307f490c92ec29ee9c5762b8536c4482322691e6df4eb28b5fe">
+        </button>
+          {% else %}
+          <button type="button" class="btn btn-white" style="width=500px;">
+            <img height=50 width=50 class="mt-2" src="https://cdn-icons-png.flaticon.com/512/1254/1254788.png?w=740&t=st=1667239799~exp=1667240399~hmac=57387968c3798307f490c92ec29ee9c5762b8536c4482322691e6df4eb28b5fe">
+            </button>
+          {% endif %}
+        </span>
+      </div>
+      </div>
+      </div>
+      {% else %}
+      <div class="text-center pb-0"><h1><img height=300 width=300 src="https://img.freepik.com/free-vector/purchase-ban-online-store-website-error-cancel-buying-order-placing-inability-buy-limit-budget-line-online-buyer-cartoon-character_335657-1173.jpg?w=740&t=st=1667362872~exp=1667363472~hmac=6dfa8efa5d64d881f50cc4e40a7f4c400ce0443eca73cbabaa744809ea89ce72"></div>
+      <div class="text-center pb-4"><h1>This Order is Cancelled</h1></div>
+      {% endif %}
+    </section>
+    {% endblock content %}
+
+{% block js %}
+    {% if messages %}
+    {% for msg in messages %}
+    <script>
+      swal('{{msg}}')
+    </script>
+    {% endfor %}
+    {% endif %}
+    {% endblock js %}

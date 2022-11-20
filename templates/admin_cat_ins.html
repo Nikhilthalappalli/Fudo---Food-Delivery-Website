@@ -1,0 +1,22 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+          <h2 class="mt-5 ms-5">Insert A New Category</h2>
+          <div class="container">
+            <form action="admin_cat_ins" method="post">
+                {% csrf_token %}
+          <div class="row mt-5">
+            <div class="col-md-2">
+            <label>Category Name</label>
+            <input type="text" name="cat_name" class="form-control mt-2 ms-3">
+            </div>
+            <div class="col-md-1" style="margin-top:33px;">
+                <button type="submit" class="btn btn-primary">Add</button>
+            </div>
+        </form>
+          </div>
+        </div>
+          {% comment %} {% if user.is_authenticated%} {% endcomment %}
+          {% comment %} {% else %} {% endcomment %}
+        {% comment %} {% endif %}  {% endcomment %}
+        {% endblock content %}

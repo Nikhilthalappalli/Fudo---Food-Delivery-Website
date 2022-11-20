@@ -1,0 +1,70 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+        <br><br>
+        <div class="text-center">
+        <h3>Edit the User information</h3>
+        <h5>The User is {{user_details.first_name}} </h5>
+        </div>
+        <br><br> 
+        <div class ="container">
+            <form id="login-form" class="form" action="/admin/admin_update/{{user_details.id}}" method="post">
+                {% csrf_token %}
+          <div class="row">
+            <div class="col">
+              <!-- Name input -->
+              <div class="form-outline">
+                  <label class="form-label" for="form8Example1">User Name</label>
+                <input type="text" id="form8Example1" class="form-control" name="username" value="{{user_details.username}}" />
+              </div>
+            </div>
+            <div class="col">
+              <!-- Email input -->
+              <div class="form-outline">
+                  <label class="form-label" for="form8Example2">Email address</label>
+                <input type="email" id="form8Example2" class="form-control" name="email" value="{{user_details.email}}" />
+              </div>
+            </div>
+          </div>  
+          <div class="row">
+            <div class="col">
+              <!-- Name input -->
+              <div class="form-outline">
+                  <label class="form-label" for="form8Example3">First name</label>
+                <input type="text" id="form8Example3" class="form-control" name="first_name" value="{{user_details.first_name}}" />
+              </div>
+            </div>
+            <div class="col">
+              <!-- Name input -->
+              <div class="form-outline">
+                  <label class="form-label" for="form8Example4">Last name</label>
+                <input type="text" id="form8Example4" class="form-control" name="last_name" value="{{user_details.last_name}}" />
+              </div>
+            </div>
+            {% comment %} <div class="col">
+              <!-- Email input -->
+              <div class="form-outline">
+                  <label class="form-label" for="form8Example5">Email address</label>
+                <input type="email" id="form8Example5" class="form-control" />
+              </div>
+            </div> {% endcomment %}
+            <div class="form-group">
+                {% comment %} <label for="remember-me" class="text-info"><span>Remember me</span> <span><input id="remember-me" name="remember-me" type="checkbox"></span></label><br> {% endcomment %}
+                <input type="submit" name="submit" class="btn btn-info btn-md" style="margin : 20px 0px 0px 613px" value="submit">
+            </div>
+          </div>
+        </form>
+        <br>
+        {% endblock content %}
+        {% block js %}
+        {% if messages %}
+        {% for message in messages %}
+        {% for msg in messages %}
+  <script>
+      swal('{{msg}}')
+  </script>
+  {% endfor %}
+        {% endfor %}
+        
+    {% endif %}
+        {% endblock js %}

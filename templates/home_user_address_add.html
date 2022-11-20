@@ -1,0 +1,54 @@
+{% extends 'home_base.html' %}
+{% load static %}
+{% block content %}
+        <section>
+          <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+            <h1 style="margin-left:50px">Add New Address</h1>
+            <form action="" method="POST">
+                {% csrf_token %}
+            <div class="container-fluid" style="margin:0px 0px 0px 50px">
+                    <div class="col-6 border-0 mt-2">
+                    <label class="mt-4 ">Complete Address :</label>
+                    <textarea  rows = "3" cols = "60" name = "complete_address">
+                     </textarea>
+                    <div class="col-6 border-0 ">
+                    <label class="mt-4 ">floor <span style="color:#6C6666">(optional)</span>:</label>
+                    <input type="text" class=" " name="floor">
+                    <div class="col-6 border-0 ">
+                    <label class="mt-4 ">Land Mark <span style="color:#6C6666">(optional)</span>:</label>
+                    <input type="text" style="width:400px" class="" name="landmark">
+                <div class="row mt-4" >
+                    <div class="col">
+                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                        <div class="me-2">
+                        <input  type="radio" class="btn-check" value='Home' name="add_type" id="btnradio1" autocomplete="off" checked>
+                        <label class="btn btn-outline-primary" for="btnradio1">Home</label>
+                        </div>
+                        <div class="me-2">
+                        <input type="radio" class="btn-check" value="Work" name="add_type" id="btnradio2" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="btnradio2">Work</label>
+                    </div>
+                        <div class="me-2">
+                        <input type="radio" class="btn-check" value="Shop" name="add_type" id="btnradio3" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="btnradio3">Shop</label>
+                    </div>
+                        <div class="me-2">
+                        <input type="radio" class="btn-check" value="Other" name="add_type" id="btnradio4" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="btnradio4">Other</label>
+                      </div>
+                    </div>
+                    <div class="col-6 border-0 mt-4 ">
+                        <button type="submit" class="btn btn-warning">Save</button>
+                </div>
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+    {% endblock content %}
+
+{% block js %}
+{% endblock js %}

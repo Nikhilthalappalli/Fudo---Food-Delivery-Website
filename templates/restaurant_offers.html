@@ -1,0 +1,154 @@
+{% extends 'restauarant_base.html' %}
+{% load static %}
+{% block content %}
+          
+          {% comment %} {% if user.is_authenticated%} {% endcomment %}
+          <nav class="navbar col-mg-6 pe-4 ">
+            <!-- Card Dark -->
+
+
+          <div class="row pe-1 py-3 ms-auto ">
+            <div class="d-flex pe-4">
+                <button type="button" class="btn btn-success ms-auto " data-mdb-ripple-color="dark" data-bs-toggle="modal" data-bs-target="#Modal2">Add New Offer</button>
+            </div>
+            
+          </div>
+        </nav>
+        <div style="overflow-x:auto;">
+        <table class="table ">
+            <thead class="table-dark">
+              <tr>
+                {% comment %} <th scope="col">Id</th> {% endcomment %}
+                <th scope="col"> </th>
+                <th scope="col">Offer Name</th>
+                <th scope="col">Offer Percentage</th>
+                <th scope="col">Max Amount</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">End Date</th>
+                {% comment %} <th scope="col">Last Login</th> {% endcomment %}
+                {% comment %} <th scope="col">Password</th> {% endcomment %}
+                <th scope="col">Block</th>
+                {% comment %} <th scope="col">Delete</th> {% endcomment %}
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="table-info">
+                {% for offer in offers %}
+                <td></td>
+                <td>{{offer.offer_name}}</td>
+                <td>{{offer.offer_percentage}}</td>
+                <td>{{offer.offer_max_amount}}</td>
+                <td>{{offer.start_date}}</td>
+                <td>{{offer.end_date}}</td>
+                {% if offer.is_active %}
+                <td><button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#Modal1{{offer.id}}">Block</button></td>
+                {% else %}
+                <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Modal3{{offer.id}}">Un Block</button></td>
+                {% endif %}
+            </tr>
+            <div class="modal fade" id="Modal1{{offer.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Block</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    Are You Sure...
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a href="res_offer_block/{{offer.id}}"><button type="button" class="btn btn-primary">Confirm</button></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal fade" id="Modal3{{offer.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Un Block</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    Are You Sure...
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a href="res_offer_unblock/{{offer.id}}"><button type="button" class="btn btn-primary">Confirm</button></a>
+                  </div>
+                </div>
+              </div>
+            </div>  
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+<!-- Modal -->
+
+<div class="modal fade" id="Modal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form action="res_offers" method="POST">
+      {% csrf_token %}
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add New Offer</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label data-error="wrong" data-success="right" for="defaultForm-email">Enter Offer Name</label>
+        <input type="text" id="defaultForm-email" name="name" class="form-control validate">
+      </div>
+      <div class="modal-body">
+        <label data-error="wrong" data-success="right" for="defaultForm-email">Enter the off percentage</label>
+        <input type="text" id="defaultForm-email" name="percentage" class="form-control validate">
+      </div>
+      <div class="modal-body">
+          <label data-error="wrong" data-success="right" for="defaultForm-email">Enter Maxmimum Off Amount</label>
+          <input type="text" id="defaultForm-email" name="max_amount" class="form-control validate">
+        </div>
+      <div class="row">
+          <div class="col">
+          <div class="modal-body">
+              <label data-error="wrong" data-success="right" for="defaultForm-email">Start Date</label>
+              <input type="date" id="defaultForm-email" name="start_date" class="form-control validate">
+            </div>
+          </div>
+          <div class="col">
+            <div class="modal-body">
+              <label data-error="wrong" data-success="right" for="defaultForm-email">End Date</label>
+              <input type="date" id="defaultForm-email" name="end_date" class="form-control validate">
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success">Confirm</button>
+      </div>
+    </div>
+  </form>
+  </div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+
+          {% comment %} {% else %} {% endcomment %}
+        {% comment %} {% endif %}  {% endcomment %}
+        {% if messages %}
+        {% for msg in messages %}
+        <script>
+          swal('{{msg}}')
+        </script>
+        {% endfor %}
+        {% endif %}
+        {% comment %} <script>
+          $(document).ready(function () {
+            $('#example').DataTable();
+        });
+        </script> {% endcomment %}
+        {% endblock js %}
+        </body>
+
+        </html>

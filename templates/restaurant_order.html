@@ -1,0 +1,159 @@
+{% extends 'restauarant_base.html' %}
+{% load static %}
+{% block content %}
+          
+          {% comment %} {% if user.is_authenticated%} {% endcomment %}
+          <nav class="navbar col-mg-6 pe-4 ">
+            <!-- Card Dark -->
+  <div class="me-5 pe-5">
+  <!-- Card Dark -->
+  </div>
+
+        </nav>
+
+        <h2 class="ms-5">Orders</h2>
+        <!-- Card Dark -->
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-danger" role="alert">
+              {{message}}
+          </div>
+            {% endfor %}
+            
+        {% endif %}
+      
+              </nav>
+              <div style="overflow-x:auto;">
+                <table class="table ">
+                  <thead class="table-dark">
+                    <tr>
+                      {% comment %} <th scope="col">Id</th> {% endcomment %}
+                      <th scope="col"> </th>
+                      {% comment %} <th scope="col">Order ID</th> {% endcomment %}
+                      <th scope="col">User</th>
+                      <th scope="col">Address</th>
+                      <th scope="col">Payment Mode</th>
+                      <th scope="col">Grand Total</th>
+                      <th scope="col">Food Status</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">View Order</th>
+                      {% comment %} <th scope="col">Last Login</th> {% endcomment %}
+                      {% comment %} <th scope="col">Password</th> {% endcomment %}
+                      {% comment %} <th scope="col">Delete</th> {% endcomment %}
+                    </tr>
+                  </thead>
+                  <tbody>
+                      {% for order in order %}
+                    <tr class="table-info">
+                      <td></td>
+                      {% comment %} <td>{{order.id}}</td> {% endcomment %}
+                      <td>{{order.user.name}}</td>
+                      <td>{{order.address.complete_address}}</td>
+                      <td>{{order.payment}}</td>
+                      <td>{{order.grand_total}}</td>
+                      {% if order.is_prepared %}
+                      <td><a href="not_prepared/{{order.id}}"><button type="button" class="btn btn-success">Prepred</button></td></a>
+                      {% else %}
+                      <td><a href="prepared/{{order.id}}"><button type="button" class="btn btn-danger">Not Prepred</button></td>
+                      {% endif %}
+                      {% if order.status %}
+                      {% if order.delivery_stat == 'Delivered' %}
+                      <td><button type="button" class="btn btn-success">{{order.delivery_stat}}</button></td>
+                      {% else %}
+                      <td><button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#Modal3{{order.id}}">{{order.delivery_stat}}</button></td>
+                      
+                      {% endif %}
+                      {% else %}
+                      <td><button type="button" class="btn btn-danger">Cancelled</button></td>
+                      {% endif %}
+                      <td><button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#Modal2{{order.cart_id}}">View</button></td>
+                    </tr>
+                    <div class="modal fade" id="Modal3{{order.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Select Status</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form action="res_delivery_stat/{{order.id}}" method="POST">
+                                {% csrf_token %}
+                            <div class="modal-body">
+                                <select class="form-select" name='stat' aria-label="Default select example">
+                                    {% comment %} <option selected>Select option</option> {% endcomment %}
+                                    {% if order.delivery_stat == 'Confirmed' %}
+                                    <option value="Confirmed">Confirmed</option>
+                                    {% endif %}
+                                    <option value="Out For Delivery">Out For Delivery</option>
+                                    <option value="Delivered">Delivered</option>
+                                  </select>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              <button type="submit" class="btn btn-primary">Confirm</button></a>
+                            </div>
+                          </div>
+                        </form>
+                        </div>
+                      </div>
+
+                      <div class="modal fade" id="Modal2{{order.cart_id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Select Status</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              {% for item in cart_item %}
+                              {% if item.cart_id == order.cart_id %}
+                              <div class="container">
+                              <div class="row">
+                                <div class="col-md-5">
+                              <h4>{{item.item.item_name}}</h4> 
+                            </div>
+                            <div class="col-md-2">
+                              | Qty:{{item.quantity}}
+                                </div>
+                                <div class="col-md-5">
+                                </div>
+                                </div>
+                              </div>
+                              {% endif %}
+                              
+                              {% endfor %}
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+
+<!-- Modal -->
+
+{% endblock content %}
+
+{% block js %}
+
+          {% comment %} {% else %} {% endcomment %}
+        {% comment %} {% endif %}  {% endcomment %}
+        {% if messages %}
+        {% for msg in messages %}
+        <script>
+          swal('{{msg}}')
+        </script>
+        {% endfor %}
+        {% endif %}
+        {% comment %} <script>
+          $(document).ready(function () {
+            $('#example').DataTable();
+        });
+        </script> {% endcomment %}
+        {% endblock js %}
+        </body>
+
+        </html>

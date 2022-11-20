@@ -1,0 +1,51 @@
+{% extends 'restauarant_base.html' %}
+{% load static %}
+{% block content %}
+          
+          <section>
+            <div class="container mt-5 pt-3">
+                
+            <form action="/restaurant/update/{{menu.id}}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- 2 column grid layout with text inputs for the first and last names -->
+                <div class="row mb-4">
+                  <div class="col">
+                    <div class="form-outline">
+                      <input type="text" name="name" id="form3Example1" value="{{menu.item_name}}" class="form-control" />
+                      <label class="form-label" for="form3Example1">Dish Name</label>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-outline">
+                      <input type="text" name='item_category' value="{{menu.item_category}}" id="form3Example2" class="form-control" />
+                      <label class="form-label" for="form3Example2">Dish Category</label>
+                    </div>
+                  </div>
+                </div>
+              
+                <!-- Email input -->
+                <div class="form-outline mb-4">
+                  <input type="text" name="item_sub_cat" value={{menu.item_sub_category}}  id="form3Example3" class="form-control" />
+                  <label class="form-label" for="form3Example3">Sub category</label>
+                </div>
+              
+                <!-- Password input -->
+                <div class="form-outline mb-4">
+                  <input type="text" name="price" value="{{menu.price}}"  id="form3Example4" class="form-control" />
+                  <label class="form-label" for="form3Example4">Price</label>
+                </div>
+
+                <div class="form-outline mb-4">
+                <input type="file" id="form3Example97" name="image" class="form-control form-control-lg" />
+                <label class="form-label" for="form3Example97">Image</label>
+                </div>
+                <!-- Checkbox -->
+              
+                <!-- Submit button -->
+                <button type="submit" class="btn btn-primary btn-block mb-4">Change</button>
+              
+                <!-- Register buttons -->
+              </form>
+            </div>
+          </section>
+        {% endblock content%}

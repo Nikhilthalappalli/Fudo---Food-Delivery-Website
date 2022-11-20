@@ -1,0 +1,161 @@
+{% extends 'home_base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+  @media only screen and (min-width: 768px) {
+    .for-small{
+      display:none;
+    }
+  }
+  @media only screen and (max-width: 600px) {
+    .for-big{
+      display:none;
+    }
+  }
+</style>
+
+    <section  class="for-big">
+    <section> 
+      <div class="container-fluid">
+        <div class="row ">
+          <div class="col-md-4 col-sm-12 mt-5 ps-5 caro-img d-none d-sm-block">
+            <img height="400px" width="500px" src="{{res.image.url}}">
+          </div>
+          <div class="col-md-4 col-sm-12 mt-md-5 ps-md-5 caro-img d-none d-sm-block d-md-none d-block d-sm-none">
+            <img height="100px" width="150px" src="https://img.freepik.com/free-photo/front-view-burger-stand_141793-15542.jpg?w=996&t=st=1665663036~exp=1665663636~hmac=f8a0227d64f4e9d926909a594efd180c2e01b460ab7ce49e04e44c25459c98b8">
+          </div>
+          <div class="col-md-6 mt-3 ps-3 text-left caro-text">
+            <div class="d-flex flex-row">
+            <h2 class = "pt-5 ps-5">{{res.name}}</h2>
+            <div class="col">
+            <div class="text-end mt-5 ms-5 ps-5 pt-4">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-danger ms-3">Filter</button>
+                    <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                      <span class="visually-hidden">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        {% for cat in category %}
+                      <li><a class="dropdown-item" href="{{res.id}}/home_cat/{{cat.id}}">{{cat.cat_name}}</a></li>
+                      {% endfor %}
+                      {% comment %} <li><hr class="dropdown-divider"></li> {% endcomment %}
+                    </ul>
+                  </div>
+                </div>
+            </div>
+            </div>
+            <p class = "pt-1 ps-5"><span>{{res.address}}</span></p>
+            {% if res_offers %}
+            <h4 class = "pt-1 ps-5" style="color:red"><span class="bg-danger rounded " style="font-size:25px;color:white;">&nbsp;{{res_offers.offer_name}},Get {{res_offers.offer_percentage}}% upto ₹{{res_offers.offer_max_amount}} &nbsp;</span></h4>
+            {% endif %}
+          </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    {% comment %} Restaurants section {% endcomment %}
+    <section>
+      
+    </section>
+       <section>
+        
+        <div class="container py-5">
+          <div class="row ms-md-5 ms-2">
+            {% for item in menus %}
+            {% if item.is_available %}
+            <div class="card mb-3 mx-4" style="max-width: 300px;">
+                <div class="row g-0">
+                  <div class="col-md-4 pt-4">
+                    <img height=90 width=200 src="{{item.item_image.url}}" class="w-100"alt="Image Not Found">
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body">
+                      <h5 class="card-title">{{item.item_name}}</h5>
+                      <p class="card-text">{{item.food_category.cat_name}}</p>
+                      <p class="card-text"><small class="text-muted">Price: ₹{{item.price}}{% for cat_offer in cat_offers %} {% if item.food_category == cat_offer.category %}| <span class="bg-danger rounded text-white">&nbsp; {{cat_offer.offer_percentage}}% off&nbsp; <span>{% endif %}{% endfor %}</small></p>
+                      <div class=" ms-4">
+                      <a href="{{res.id}}/home_cat_add/{{item.id}}"><button type="button" class="btn btn-dark">Add To Cart</button></a>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+              </div>
+              {% else %}
+              {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+            
+      </section>
+    </section>
+  </section>
+
+  {% comment %} for small screen {% endcomment %}
+
+  <section class="for-small caro-img mt-2 ms-2">
+    <div class="row">
+      <div class="col-5">
+        <img height="150px" width="150px" src="{{res.image.url}}">
+      </div>
+      <div class="col-7">
+        <h2 class = "">{{res.name}}</h2>
+        <p class = ""><span>{{res.address}}</span></p>
+        {% if res_offers %}
+            <p style="color:red; font-size=7px;"><span class="bg-danger rounded " style="color:white;">&nbsp;{{res_offers.offer_name}},Get {{res_offers.offer_percentage}}% upto ₹{{res_offers.offer_max_amount}} &nbsp;</span></p>
+        {% endif %}
+      </div>
+    </div>
+    <div class="btn-group mt-3">
+      <button type="button" class="btn btn-danger ms-3">Filter</button>
+      <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+        <span class="visually-hidden">Toggle Dropdown</span>
+      </button>
+      <ul class="dropdown-menu">
+          {% for cat in category %}
+        <li><a class="dropdown-item" href="{{res.id}}/home_cat/{{cat.id}}">{{cat.cat_name}}</a></li>
+        {% endfor %}
+        {% comment %} <li><hr class="dropdown-divider"></li> {% endcomment %}
+      </ul>
+    </div>
+    <div class="container mt-2">
+      <div class="row">
+        {% for item in menus %}
+        {% if item.is_available %}
+        <div class="card mb-3 mx-4" style="max-width: 300px;">
+            <div class="row">
+              <div class="col-4 pt-4">
+                <img height=100 width=100 src="{{item.item_image.url}}" class=""alt="Image Not Found">
+              </div>
+              <div class="col-8">
+                <div class="card-body">
+                  <h5 style="font-size:15px;" class="card-title">{{item.item_name}}</h5>
+                  <p style="font-size:15px;" class="card-text">{{item.food_category.cat_name}}</p>
+                  <p style="font-size:14px;" class="card-text"><small class="text-muted">Price: ₹{{item.price}}{% for cat_offer in cat_offers %} {% if item.food_category == cat_offer.category %}| <span class="bg-danger rounded text-white">&nbsp; {{cat_offer.offer_percentage}}% off&nbsp; <span>{% endif %}{% endfor %}</small></p>
+                  <div class=" ms-4">
+                  <a href="{{res.id}}/home_cat_add/{{item.id}}"><button type="button" style="font-size:12px;" class="btn btn-dark">Add To Cart</button></a>
+                </div>
+              </div>
+              </div>
+            </div>
+          </div>
+          {% else %}
+          {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+  </section>
+    {% endblock content %}
+
+{% block js %}
+    {% if messages %}
+        {% for msg in messages %}
+        <script>
+          swal('{{msg}}')
+        </script>
+        {% endfor %}
+        {% endif %}
+        {% endblock js %}
+    <script src="" async defer></script>
+    </body>
+</html>

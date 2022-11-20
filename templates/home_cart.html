@@ -1,0 +1,166 @@
+{% extends 'home_base.html' %}
+{% load static %}
+{% block content %}
+{% if cart %}
+<section style="margin-top:60px;">
+          <h1 class="ms-5 ps-3">Your Cart</h1>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="row">
+                        <div class="col">
+                        <h3>Grand Total<h3>
+                        </div>
+                        <div class="col text-end">
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#Modal1">Remove Cart</button>
+                        </div>
+
+                        </div>
+                        <hr>
+                        <div class="font-size=10px">
+                        <h5 class="pb-3" >Item Total : ₹<span id="total">{{total}}<span></h5>
+                        <h5 class="pb-3">Other Charges:₹{{delivery}}</h5>
+                        {% comment %} <h5 class="pb-3">Donations:₹2</h5> {% endcomment %}
+                        </div>
+                        <div class="mt-5">
+                            <h4 >Grand Total: ₹<span id="grand_total">{{grand_total}}<span></h4>
+                        </div>
+                        <hr>
+                        
+                        <div class="text-end me-3">
+                        
+                        <a href="checkout"><button type="button" class="btn btn-danger">Place Order</button></a>    
+                        </div>
+                    </div>    
+                    <div class="col-md-1">
+                    </div>
+                    
+                    <div class="col-md-5">
+                        <div class="border border-danger p-2 mb-2 border-opacity-75 rounded">
+                        <div class="container">
+                            {% for item  in cart_item %}
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h3>{{item.item.item_name}}</h3>
+                                    <p>₹{{item.item.price}}</p>
+                                </div>
+                                <div class="col-md-4 mt-3">
+                                  {% if item.quantity == 1 %}
+                                    <button type="button" id="myBtn{{item.id}}" onclick=down({{item.id}}) class="btn btn-warning" disabled>-</button>
+                                    {% else %}
+                                    <button type="button" id="myBtn{{item.id}}" onclick=down({{item.id}}) class="btn btn-warning">-</button>
+                                    {% endif %}
+                                    <button type="button" id="{{item.id}}" class="btn btn-warning amnt">{{item.quantity}}</button>
+                                    <button type="button" onclick=up({{item.id}}) class="btn btn-warning">+</button>
+                                    <div class="text-center">
+                                    <a href="remove_cart_item/{{item.id}}"><button type="button" class="btn btn-danger mt-2 text-center">Remove</button></a>
+                                    </div>
+                                    <div class="text-center ms-4 mt-1">
+                                        <h5></h5>
+                                    </div>
+                                </div>
+                            </div>  
+                            <hr> 
+
+                        <div class="modal fade" id="Modal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLabel">Remove Cart</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                  Are You Sure...
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                  <a href="remove_cart"><button type="button" class="btn btn-primary">Confirm</button></a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        {% endfor %} 
+                      </div>
+                               
+                    </div>
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="modal fade" id="Modal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <form action="" method="POST">
+              {% csrf_token %}
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Apply Coupon</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <label data-error="wrong" data-success="right" for="defaultForm-email">Enter Coupon Code</label>
+                <input type="text" id="defaultForm-email" name="code" class="form-control validate">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-success">Confirm</button>
+              </div>
+            </div>
+          </form>
+          </div>
+        </div>  
+        {% else %}
+        <div class="container mt-5">
+        <div class="text-center">
+          <div class=" pb-3"><h1><img height=150 width=150 src="https://cdn-icons-png.flaticon.com/512/891/891588.png?w=740&t=st=1668486676~exp=1668487276~hmac=87f401f9d775f3d4793ebd12521edda3f74414323a7aae29feee03650612d914"></div>
+          <h2>Your Cart Is Empty</h2>
+        </div>
+      </div>
+        {% endif %}
+        {% endblock content %}
+
+{% block js %}
+<script>
+  function up(id){
+      console.log('up')
+      $.ajax({
+          type: "GET",
+          url: "up_quantity/"+id,
+          success: function(data){
+              console.log(data.qty)
+              document.getElementById(id).innerHTML = data.qty;
+              document.getElementById("total").innerHTML = data.total;
+              document.getElementById("grand_total").innerHTML = data.grand_total;
+              if (data.qty > 1){
+                  console.log('remove')
+                  document.getElementById("myBtn"+id).disabled = false;
+              }
+              else{
+                  document.getElementById("myBtn"+id).disabled = true;
+              }
+          }
+      });
+  }
+  function down(id){
+    console.log('down')
+    
+    $.ajax({
+        type: "GET",
+        url: "down_quantity/"+id,
+        success: function(data){
+            document.getElementById(id).innerHTML = data.qty;
+            document.getElementById("total").innerHTML = data.total;
+            document.getElementById("grand_total").innerHTML = data.grand_total;
+            if (data.qty != 1){
+                document.getElementById("myBtn"+id).disabled = false;
+            }
+            else{
+                document.getElementById("myBtn"+id).disabled = true;
+                location.reload();
+            }
+        }
+    });
+}
+</script>
+        {% endblock js %}     

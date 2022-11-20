@@ -1,0 +1,125 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+<nav class="navbar col-mg-6 pe-4">
+  <!-- Card Dark -->
+  <h2 class="ms-5">Stores</h2>
+  <!-- Card Dark -->
+  {% if messages %} {% for message in messages %}
+  <div class="alert alert-danger" role="alert">{{message}}</div>
+  {% endfor %} {% endif %}
+</nav>
+          <table class="table" id="myTable">
+            <thead class="table-dark">
+              <tr>
+                {% comment %} <th scope="col">Id</th> {% endcomment %}
+                <th scope="col"> </th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Place</th>
+                <th scope="col">Category</th>
+                <th scope="col">Rating</th>
+                <th scope="col">Approval Status</th>
+                {% comment %} <th scope="col">Last Login</th> {% endcomment %}
+                {% comment %} <th scope="col">Password</th> {% endcomment %}
+                <th scope="col">Block</th>
+                {% comment %} <th scope="col">Delete</th> {% endcomment %}
+              </tr>
+            </thead>
+            <tbody>
+                {% for dis in details %}
+              <tr class="table-info">
+                {% comment %} {% if dis.is_superuser %} {% endcomment %}
+                
+                {% comment %} {% else %} {% endcomment %}
+                {% if dis.is_superuser %}
+                
+                {% endif %}
+                {% if dis.restaurants.is_user %}
+                {% endif %}
+                {% if dis.restaurants.email %}
+                <td></td>
+                <td>{{dis.restaurants.name}}</td>
+                <td>{{dis.restaurants.email}}</td>
+                <td>{{dis.restaurants.place.name}}</td>
+                <td>{{dis.restaurants.category}}</td>
+                <td>{{dis.restaurants.rating}}</td>
+                {% if dis.restaurants.is_approved %}
+                {% comment %} <td><div class="bg-success rounded-pill text-light" style="width: 63px; height: 27px; text-align:center;">Approved</div></td> {% endcomment %}
+                <td><a href="disapprove/{{dis.restaurants.id}}"><button type="button" class="btn btn-success">Approved</button></a></td>
+                {% else %}
+                {% comment %} <td><div class="bg-danger rounded-pill text-light" style="width: 120px; height: 27px; text-align:center;">Not Approved</div></td> {% endcomment %}
+                <td><a href="approve/{{dis.restaurants.id}}"><button type="button" class="btn btn-primary">Approve</button></a></td>
+                {% endif %}
+                {% comment %} {% if dis.is_superuser %}
+                <td><div class="bg-success rounded-pill text-light" style="width: 63px; height: 27px; text-align:center;">Staff</div></td>
+                {% else %}
+                <td><div class="bg-danger rounded-pill text-light" style="width: 63px; height: 27px; text-align:center;">User</div></td>
+                {% endif %}
+                <td>{{dis.last_login}}</td> {% endcomment %}
+                {% comment %} <td><a href="unblock/{{dis.id}}"><button type="button" class="btn btn-primary">Block</button></a></td> {% endcomment %}
+                {% if dis.is_active %}
+                <td><button type="button" class="btn btn-danger"  data-bs-toggle="modal" data-bs-target="#Modal1{{dis.id}}">Block</button></td>
+                {% else %}
+                <td><button type="button" class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#Modal2{{dis.id}}">Un Block</button></td>
+                {% endif %}
+                {% comment %} <td><a href="delete/{{dis.id}}" onclick="return confirm('Confirm your process')"><button type="button" class="btn btn-warning">Delete</button></a></td> {% endcomment %}
+              </tr>
+              {% comment %} {% endif %} {% endcomment %}
+              {% else %}
+              {% endif %}
+              <div class="modal fade" id="Modal1{{dis.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Block</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      Are You Sure...
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <a href="block/{{dis.id}}"><button type="button" class="btn btn-primary">Confirm</button></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="modal fade" id="Modal2{{dis.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">UnBlock User</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      Are You Sure...
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <a href="unblock/{{dis.id}}"><button type="button" class="btn btn-primary">Confirm</button></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            
+            </tbody>
+          </table>
+        {% endblock content%}
+        {% block js %}
+        <script>
+          $(document).ready(function() {
+              $('#myTable').DataTable( {
+                  dom: 'Bfrtip',
+                  buttons: [
+                      'excel', 'pdf',
+                  ]
+              } );
+        }
+        );
+      </script>
+      {% endblock js %}
+

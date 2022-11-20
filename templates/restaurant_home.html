@@ -1,0 +1,192 @@
+{% extends 'restauarant_base.html' %}
+{% load static %}
+{% block content %}
+          
+          {% comment %} {% if user.is_authenticated%} {% endcomment %}
+          <nav class="navbar col-mg-6 pe-4 ">
+            <!-- Card Dark -->
+<div class="card ms-5 w-50 border-0" style="background-image:url()">
+
+    <!-- Card image -->
+    <div class="view overlay">
+    </div>
+  <div class="d-flex flex-row">
+    <!-- Card content -->
+    <div class="card-body elegant-color white-text rounded-bottom text-left">
+  
+      <!-- Social shares button -->
+      <!-- Title -->
+      <h4 class="card-title">Total Menu Items</h4>
+      <!-- Text -->
+      {% comment %} <p class="card-title white-text mx-5">    4</p> {% endcomment %}
+      <h4 class="card-title ms-5 ps-4">{{count}}</h4>
+
+      <!-- Link -->
+  
+    </div>
+    </div>
+  
+  </div>
+  <div class="me-5 pe-5">
+  <!-- Card Dark -->
+  </div>
+  <div class="row ms-1 ps-1 py-3 ms-auto ">
+    
+  </div>
+  <div class="row ms-1 ps-1 py-3 ms-auto ">
+    <div class="d-flex ms-1 ps-1 ">
+        <a class="nav-link" href="res_cat_add"><button type="button" class="btn btn-success ms-auto " data-mdb-ripple-color="dark">Add New Category</button></a>
+    </div>
+    
+  </div>
+          <div class="row pe-1 py-3 ms-auto ">
+            <div class="d-flex pe-4">
+                <a class="nav-link" href="res_ins"><button type="button" class="btn btn-success ms-auto " data-mdb-ripple-color="dark">Add New Menu Item</button></a>
+            </div>
+            
+          </div>
+        </nav>
+        <div style="overflow-x:auto;">
+          <table class="table table table-hover" style="width:100%" id="example">
+            <thead class="table-dark">
+              <tr>
+                {% comment %} <th scope="col">Id</th> {% endcomment %}
+                <th scope="col"> </th>
+                <th scope="col"> </th>  
+                <th scope="col">Name</th>
+                <th scope="col">Category</th>
+                {% comment %} <th scope="col">Sub Category</th> {% endcomment %}
+                <th scope="col">Price</th>
+                <th scope="col">Availability</th>
+                <th scope="col">Image</th>
+                {% comment %} <th scope="col">Password</th> {% endcomment %}
+                <th scope="col">Update</th>
+                <th scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for dis in details %}
+                {% comment %} {% if dis.restaurant_id == user.restaurants.id %} {% endcomment %}
+              <tr class="table-info">
+                {% comment %} {% if dis.is_superuser %} {% endcomment %}
+                
+                {% comment %} {% else %} {% endcomment %}
+                <td></td>
+                <td></td>
+                <td>{{dis.item_name}}</td>
+                <td>{{dis.item_category}}</td>
+                {% comment %} <td>{{dis.item_sub_category}}</td> {% endcomment %}
+                <td>{{dis.price}}</td>
+                {% comment %} {% if dis.is_active %}
+                <td><div class="bg-success rounded-pill text-light" style="width: 63px; height: 27px; text-align:center;">Active</div></td>
+                {% else %}
+                <td><div class="bg-danger rounded-pill text-light" style="width: 63px; height: 27px; text-align:center;">Inactive</div></td>
+                {% endif %}
+                {% if dis.is_superuser %}
+                <td><div class="bg-success rounded-pill text-light" style="width: 63px; height: 27px; text-align:center;">Staff</div></td>
+                {% else %}
+                <td><div class="bg-danger rounded-pill text-light" style="width: 63px; height: 27px; text-align:center;">User</div></td>
+                {% endif %} {% endcomment %}
+                {% if dis.is_available %}
+                <td><a href="unavailable/{{dis.id}}"><button type="button" class="btn btn-success">Available</button></a></td>
+                {% else %}
+                <td><a href="available/{{dis.id}}"><button type="button" class="btn btn-danger">Un Available</button></a></td>
+                {% endif %}
+                <td><img height=50 width=70 src={{dis.item_image.url}} style="border-radius:10px;"></td>
+                <td><a href="edit/{{dis.id}}"><button type="button" class="btn btn-primary">Edit</button></a></td>
+                <td><button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#Modal1{{dis.id}}">Delete</button></td>
+              </tr>
+              {% comment %} {% endif %} {% endcomment %}
+              {% comment %} {% else %} {% endcomment %}
+
+              <div class="modal fade" id="Modal1{{dis.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      Are You Sure...
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <a href="delete/{{dis.id}}"><button type="button" class="btn btn-primary">Confirm</button></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% comment %} {% endif %} {% endcomment %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+<!-- Modal -->
+
+<div class="modal fade" id="Modal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form action="res_offers" method="POST">
+      {% csrf_token %}
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add New Offer</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label data-error="wrong" data-success="right" for="defaultForm-email">Enter Offer Name</label>
+        <input type="text" id="defaultForm-email" name="name" class="form-control validate">
+      </div>
+      <div class="modal-body">
+        <label data-error="wrong" data-success="right" for="defaultForm-email">Enter the off percentage</label>
+        <input type="text" id="defaultForm-email" name="percentage" class="form-control validate">
+      </div>
+      <div class="modal-body">
+          <label data-error="wrong" data-success="right" for="defaultForm-email">Enter Maxmimum Off Amount</label>
+          <input type="text" id="defaultForm-email" name="max_amount" class="form-control validate">
+        </div>
+      <div class="row">
+          <div class="col">
+          <div class="modal-body">
+              <label data-error="wrong" data-success="right" for="defaultForm-email">Start Date</label>
+              <input type="date" id="defaultForm-email" name="start_date" class="form-control validate">
+            </div>
+          </div>
+          <div class="col">
+            <div class="modal-body">
+              <label data-error="wrong" data-success="right" for="defaultForm-email">End Date</label>
+              <input type="date" id="defaultForm-email" name="end_date" class="form-control validate">
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success">Confirm</button>
+      </div>
+    </div>
+  </form>
+  </div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+
+          {% comment %} {% else %} {% endcomment %}
+        {% comment %} {% endif %}  {% endcomment %}
+        {% if messages %}
+        {% for msg in messages %}
+        <script>
+          swal('{{msg}}')
+        </script>
+        {% endfor %}
+        {% endif %}
+        {% comment %} <script>
+          $(document).ready(function () {
+            $('#example').DataTable();
+        });
+        </script> {% endcomment %}
+        {% endblock js %}
+        </body>
+
+        </html>

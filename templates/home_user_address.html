@@ -1,0 +1,101 @@
+{% extends 'home_base.html' %}
+{% load static %}
+{% block content %}
+<style>
+@media only screen and (min-width: 768px) {
+  .for-small{
+    display:none;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .for-big{
+    display:none;
+  }
+}
+</style>
+        <section style="margin-top:60px;">
+          <div class="container">
+          <div class="row">
+          <div class="col-md-6">
+            <h1>Add New Address</h1>
+            <form action="" method="POST">
+              {% csrf_token %}
+              <label class="mt-4 ">Complete Address :</label><br>
+              <textarea  rows = "3" cols = "40" name = "complete_address"></textarea><br>
+              <label class="mt-4 ">floor <span style="color:#6C6666">(optional)</span>:</label><br>
+              <input type="text" class=" " name="floor"><br>
+              <label class="mt-4 ">Land Mark <span style="color:#6C6666">(optional)</span>:</label><br>
+              <input type="text" style="width:300px" class="" name="landmark"><br>
+              <div class="container">
+              <div class="row mt-4" >
+                <div class="col-md-6">
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                    <div class="me-2">
+                    <input  type="radio" class="btn-check" value='Home' name="add_type" id="btnradio1" autocomplete="off" checked>
+                    <label class="btn btn-outline-primary" for="btnradio1">Home</label>
+                    </div>
+                    <div class="me-2">
+                    <input type="radio" class="btn-check" value="Work" name="add_type" id="btnradio2" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="btnradio2">Work</label>
+                </div>
+                    <div class="me-2">
+                    <input type="radio" class="btn-check" value="Shop" name="add_type" id="btnradio3" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="btnradio3">Shop</label>
+                </div>
+                    <div class="me-2">
+                    <input type="radio" class="btn-check" value="Other" name="add_type" id="btnradio4" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="btnradio4">Other</label>
+                  </div>
+                  <div class="border-0 mt-5 pt-2 ms-3">
+                    <button type="submit" class="btn btn-warning for-big">save</button>
+                </div>
+                
+                </div>
+                <div class="border-0 mb-3 for-small text-start">
+                  <button type="submit" class="btn btn-warning">Save</button>
+              </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+          <div class="col-md-5">
+            <div class="container ps-5 pt-2">
+              <h2>Addresses</h2>
+              <div class="border border-danger p-2 mb-2 border-opacity-75 rounded">
+                {% for add in address %}
+                <div class="row">
+                  <div class="col-md-3">
+                <button type="button" class="btn btn-dark"><span style="font-size:12px"></span>{{add.type}}</button>
+                  </div>
+                  <div class="col-md-6">
+                  </div>
+                <div class="col-md-3 text-end">
+                <a href="remove_add/{{add.id}}"><button type="button" class="btn btn-danger text-end"><span style="font-size=10px;">Remove</span></button></a>
+              </div>
+                </div>
+                <div>
+                <span class="pt-3" style="font-size:18px">{{add.complete_address}}</span>
+                </div>
+                <div>
+                <span style="font-size:15px">Floor: {{add.floor}}</span>
+                </div>
+              <div>
+                <span  style="font-size:15px">Landmark: {{add.land_mark}}</span>
+              </div>
+              
+              <hr>
+              {% endfor %}
+              </div>
+              
+            </div>
+            
+          </div>
+          </div>
+          </div>
+        </section>
+        {% endblock content %}
+
+{% block js %}
+{% endblock js %}
+        <script src="" async defer></script>

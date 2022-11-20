@@ -1,0 +1,67 @@
+{% extends 'restauarant_base.html' %}
+{% load static %}
+{% block content %}
+          
+          <section>
+            <div class="container mt-5 pt-3">
+                
+            <form action="menu_reg" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row pe-5 py-3 ms-auto ">
+                    <div class="d-flex pe-4">
+                        <a class="nav-link" href="res_ins"><input type="hidden" value={{user.restaurants.id}} name="id" id="form3Example1" class="form-control" /><button type="button" class="btn btn-success ms-auto " data-mdb-ripple-color="dark">{{user.restaurants.name}}</button></a>
+                    </div>
+                  </div>
+                <!-- 2 column grid layout with text inputs for the first and last names -->
+                <div class="row mb-4">
+                  <div class="col">
+                    <div class="form-outline">
+                      <input type="text" name="name" id="form3Example1" class="form-control" />
+                      <label class="form-label" for="form3Example1">Dish Name</label>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-outline">
+                      <input type="text" name='item_category' id="form3Example2" class="form-control" />
+                      <label class="form-label" for="form3Example2">Dish Category</label>
+                    </div>
+                  </div>
+                </div>
+              
+                <!-- Email input -->
+                {% comment %} <div class="form-outline mb-4">
+                  <input type="text" name="item_sub_cat" id="form3Example3" class="form-control" />
+                  <label class="form-label" for="form3Example3">Sub category</label>
+                </div>
+               {% endcomment %}
+                <!-- Password input -->
+                <div class="col">
+                    <div class="form-outline mt-1 mb-4">
+                      <label class="form-label" for="form3Example2">Category</label>
+                      <select id="cars" name='cat'>
+                        {% for cat in category  %}
+                        <option value="{{cat.id}}">{{cat.cat_name}}</option>
+                        {% endfor %}
+                      </select>
+                      
+                    </div>
+                </div>
+                <div class="form-outline mb-4">
+                  <input type="text" name="price"  id="form3Example4" class="form-control" />
+                  <label class="form-label" for="form3Example4">Price</label>
+                </div>
+
+                <div class="form-outline mb-4">
+                <input type="file" id="form3Example97" name="image" class="form-control form-control-lg" />
+                <label class="form-label" for="form3Example97">Image</label>
+                </div>
+                <!-- Checkbox -->
+              
+                <!-- Submit button -->
+                <button type="submit" class="btn btn-primary btn-block mb-4">Add</button>
+              
+                <!-- Register buttons -->
+              </form>
+            </div>
+          </section>
+        {% endblock content%}

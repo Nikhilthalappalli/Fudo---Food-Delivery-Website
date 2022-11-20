@@ -1,0 +1,299 @@
+{% extends 'home_base.html' %}
+{% load static %}
+{% block content %}
+
+<div>
+    <form action="" method="POST">
+      {% csrf_token %}
+    <section class="mt-2">
+      <div class="container">
+        <h1>Your Order <button type="button" class="btn btn-success mb-2 text-end" data-bs-toggle="modal" data-bs-target="#Modal2">Apply Coupon</button></h1>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="border border-warning p-2 mb-2  rounded">
+              <div class="container">
+                  {% for item  in cart_item %}
+                  <div class="row">
+                      <div class="col-md-8">
+                          <h3>{{item.item.item_name}}</h3>
+                          <p>₹{{item.item.price}} | Qty-{{item.quantity}}</p>
+                      </div>
+                    </div>  
+                    {% endfor %} 
+                  <hr>  
+                  <div class="font-size=10px">
+                    <h5 class="pb-3">Item Total : ₹{{total}}</h5>
+                    <h5 class="pb-3">Other Charges:₹{{delivery}}</h5>
+                    </div>
+                    <hr>
+                    <div class="mt-5">
+                        <h4><u>Grand Total: ₹{{grand_total}}</u></h4>
+                    </div>
+              </div>          
+          </div>
+        </div>
+          <div class="col-md-4">
+              <div class="container ps-2 pt-2">
+                <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#Modal1">Add New Address</button>
+                <div class="border border-secondary p-2 mb-2 border-opacity-75 rounded">
+                  
+                  {% for add in address %}
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" name="address" value="{{add.id}}" type="radio" id="address" checked><br>
+                    <label class="form-check-label" for="flexSwitchCheckDefault">{{add.complete_address}}</label>
+                  </div>
+                <hr>
+                {% endfor %}
+                </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="container ps-2 pt-2">
+              <div class="border border-secondary p-2 mb-2 border-opacity-75 rounded">
+                <div class="form-check">
+                  {% comment %} <input class="form-check-input" type="radio" name="payment" value="Cash On Delivery" id="payment" value="option1" checked>
+                  <label class="form-check-label" for="exampleRadios1">
+                    Cash on Delivery
+                  </label> {% endcomment %}
+                  <button type="submit" name="payment" value="Cash On Delivery" class="btn btn-warning">Cash on Delivery</button>
+                </div>
+                <br>
+                <div class="form-check">
+                  {% comment %} <input class="form-check-input" type="radio" name="payment" value="PayPal" id="payment" value="option1" checked>
+                  <label class="form-check-label" for="exampleRadios1">
+                    
+                  </label> {% endcomment %}
+                  <div id="paypal-button-container"></div>
+                </div>
+                <br>
+                <div class="form-check">
+                  {% comment %} <input class="form-check-input" type="radio" name="payment" value="Razorpay" id="payment" value="option1" checked>
+                  <label class="form-check-label" for="exampleRadios1"> {% endcomment %}
+                    <button id="rzp-button1" class="btn btn-warning">Razorpay</button>
+                  </label>
+                </div>
+                <br>
+              </div>
+              <div class="text-end me-3">
+              {% comment %} <button type="submit" class="btn btn-warning">Place Order</button> {% endcomment %}
+              </div>
+            </div> 
+          </div>
+        </div>
+      </div>
+    </section>
+  </form>
+</div>
+  <div class="modal fade" id="Modal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <form action="checkout" method="POST">
+        {% csrf_token %}
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Apply Coupon</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <label data-error="wrong" data-success="right" for="defaultForm-email">Enter Coupon Code</label>
+          <input type="text" id="defaultForm-email" name="code" class="form-control validate">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-success">Confirm</button>
+        </div>
+      </div>
+    </form>
+    </div>
+  </div>  
+  <div class="modal fade" id="Modal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <form action="address" method="POST">
+        {% csrf_token %}
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add New Address</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="col-6 border-0 mt-2">
+            <label class="mt-0 ">Complete Address :</label>
+            <textarea  rows = "3" cols = "60" name = "complete_address">
+             </textarea>
+            <div class="col-6 border-0 ">
+            <label class="mt-4 ">floor <span style="color:#6C6666">(optional)</span>:</label>
+            <input type="text" class=" " name="floor">
+            <div class="col-6 border-0 ">
+            <label class="mt-4 ">Land Mark <span style="color:#6C6666">(optional)</span>:</label>
+            <input type="text" style="width:400px" class="" name="landmark">
+        <div class="row mt-4" >
+            <div class="col">
+            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                <div class="me-2">
+                <input  type="radio" class="btn-check" value='Home' name="add_type" id="btnradio1" autocomplete="off" checked>
+                <label class="btn btn-outline-primary" for="btnradio1">Home</label>
+                </div>
+                <div class="me-2">
+                <input type="radio" class="btn-check" value="Work" name="add_type" id="btnradio2" autocomplete="off">
+                <label class="btn btn-outline-primary" for="btnradio2">Work</label>
+            </div>
+                <div class="me-2">
+                <input type="radio" class="btn-check" value="Shop" name="add_type" id="btnradio3" autocomplete="off">
+                <label class="btn btn-outline-primary" for="btnradio3">Shop</label>
+            </div>
+                <div class="me-2">
+                <input type="radio" class="btn-check" value="Other" name="add_type" id="btnradio4" autocomplete="off">
+                <label class="btn btn-outline-primary" for="btnradio4">Other</label>
+              </div>
+            </div>
+            <div class="col-6 border-0 mt-4 ">
+                <button type="submit" class="btn btn-warning">Save</button>
+        </div>
+        </div>
+          {% comment %} <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-success">Confirm</button>
+          </div> {% endcomment %}
+      </div>
+    </form>
+    </div>
+  </div>
+  
+  
+  
+  
+  <script src="https://www.paypal.com/sdk/js?client-id=AZRR3YjJZypRgJygI_ym0N_QkqJlELc8lerzeh10E-1cxNIzKlXSM0EJSxYhj8-5paXAeTm-1Cj4ke1w&currency=USD&disable-funding=card"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script>
+    paypal.Buttons({
+      //onclick: function(data, actions) {
+       // return actions.resolve();
+
+        
+      //},
+      // Sets up the transaction when a payment button is clicked
+      createOrder: (data, actions) => {
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: '{{grand_total}}'// Can also reference a variable or function
+            }
+          }]
+        });
+      },
+      // Finalize the transaction after payer approval
+      onApprove: (data, actions) => {
+        return actions.order.capture().then(function(orderData) {
+          console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+          
+
+          //var amount = $('#grand_total').val()
+          //var cart = $('#cart').val()
+          var address = $('#address').val()
+          var payment = "PayPal"
+          var token = $("input[name='csrfmiddlewaretoken']").val()
+          $.ajax({
+            url: "/checkout",
+            type: "POST",
+            data: {
+              'csrfmiddlewaretoken': token,
+              //'amount': amount,
+              //'cart': cart,
+              'address': address,
+              'payment': payment,
+            },
+            success: function(response) {
+              console.log(response)
+              
+                swal({
+                  title: "Payment Successful",
+                  text: "Your payment is successful",
+                  icon: "success",
+                  button: "OK",
+                }).then(function() {
+                  window.location.href = "order_placed";
+                });
+             
+            }
+          })
+        });
+      }
+    }).render('#paypal-button-container');
+    </script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+      $(document).ready(function() {
+        $('#rzp-button1').click(function (e) { 
+          var address = $('#address').val()
+          var payment = "Razorpay"
+          var token = $("input[name='csrfmiddlewaretoken']").val()
+          e.preventDefault();
+          console.log("innnn")
+          $.ajax({
+                type: "GET",
+                url: "/razorpay",
+                success: function (response) {
+                    var options={
+                        "key": "rzp_test_1Vay7kTQuqXGyP", // Enter the Key ID generated from the Dashboard
+                        //"amount": response.total*100,//response.total, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                        "amount": '{{grand_total}}'*100,
+                        "currency": "INR",
+                        "name": "cart",
+                        "description": "Thank you for shopping with us",
+                        {% comment %} "image": "https://example.com/your_logo", {% endcomment %}
+                        // "order_id": response.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                        "handler": function (response){
+                            // alert(response.razorpay_payment_id);
+                            data = {
+                                "id": response.razorpay_payment_id,
+                                "address" : address,
+                                "payment" : payment,
+                                'csrfmiddlewaretoken': token
+                            }
+                            $.ajax({
+                                type: "POST",
+                                url: "/checkout",
+                                data: data,
+                                success: function (response) {
+                                  console.log(response)
+                                  swal({
+                                    title: "Payment Successful",
+                                    text: "Your payment is successful",
+                                    icon: "success",
+                                    button: "OK",
+                                  }).then(function() {
+                                    window.location.href = "order_placed";
+                                  });
+                                }
+                            });
+                        },
+                        "prefill": {
+                            "name": "Gaurav Kumar",
+                            "email": "",
+                            "contact": "9999999999",
+                        },
+                        "notes": {
+                            "address": "Razorpay Corporate Office"
+                        },
+                        "theme": {
+                            "color": "#3399cc"
+                        },
+                    };
+                    var rzp1 = new Razorpay(options);
+                    rzp1.open();
+                }
+            });
+        });
+    });
+    </script>
+    {% endblock content %}
+
+{% block js %}
+    {% if messages %}
+        {% for msg in messages %}
+        <script>
+          swal('{{msg}}')
+        </script>
+        {% endfor %}
+        {% endif %}
+
+    {% endblock js %}

@@ -1,0 +1,190 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+          
+          {% if user.is_authenticated%}
+          <nav class="navbar col-mg-6 pe-4 ">
+            <!-- Card Dark -->
+<div class="card ms-5 w-50 border-0" style="background-image:url()">
+
+    <!-- Card image -->
+    <div class="view overlay">
+    </div>
+  <div class="d-flex flex-row">
+    <!-- Card content -->
+    <div class="card-body elegant-color white-text rounded-bottom text-center">
+  
+      <!-- Social shares button -->
+      <!-- Title -->
+      <h4 class="card-title">Total User Count</h4>
+      <!-- Text -->
+      {% comment %} <p class="card-title white-text mx-5">    4</p> {% endcomment %}
+      <h4 class="card-title">{{user_count}}</h4>
+      <!-- Link -->
+  
+    </div>
+    <div class="card-body elegant-color white-text rounded-bottom text-center">
+  
+        <!-- Social shares button -->
+        <!-- Title -->
+        <h4 class="card-title">Total Restaurant Count</h4>
+        <!-- Text -->
+        {% comment %} <p class="card-title white-text mx-5">    4</p> {% endcomment %}
+        <h4 class="card-title ">{{res_count}}</h4>
+        <!-- Link -->
+    
+      </div>
+      <div class="card-body elegant-color white-text rounded-bottom text-center">
+  
+        <!-- Social shares button -->
+        <!-- Title -->
+        <h4 class="card-title">Approved Restaurant Count</h4>
+        <!-- Text -->
+        {% comment %} <p class="card-title white-text mx-5">    4</p> {% endcomment %}
+        <h4 class="card-title ">{{app_count}}</h4>
+        <!-- Link -->
+    
+      </div>
+    </div>
+  
+  </div>
+  
+  <!-- Card Dark -->
+  <div class="d-flex">
+    <a class="nav-link"><button type="button" class="btn btn-success ms-auto" data-bs-toggle="modal" data-bs-target="#Modal1">Add A New Place</button></a>
+</div>
+</nav>
+<div class="container-fluid ">
+  <div class="row">
+    <div class="col-md-6 bg-light rounded border border-dark">
+      <div class="container">
+      <h3 class="mt-3 fw-bold ms-3">Order - Total chart</h3>
+  <hr>
+          <canvas class="mt-3 " id="myChart1" width="0" height="200"></canvas>
+          <script>
+              var ctx = document.getElementById('myChart1').getContext('2d');
+              var myChart1 = new Chart(ctx, {
+                  type: 'bar',
+                  data: { 
+                      labels: [{% for o in order %} '{{o.id}}', {% endfor %}],
+                      
+                  datasets: [{
+                  label: 'Grand Total',
+                  data: [{% for o in order %} '{{o.grand_total}}', {% endfor %}],
+                  backgroundColor: [
+                      'rgba(255, 99, 132, 1)',
+                      'rgba(54, 162, 235, 1)',
+                      'rgba(255, 206, 86, 1)',
+                      'rgba(75, 192, 192, 1)',
+                      'rgba(153, 102, 255, 1)',
+                      'rgba(255, 159, 64, 1)'
+                  ],
+                      borderColor: [
+                          'rgba(255, 99, 132, 1)',
+                          'rgba(54, 162, 235, 1)',
+                          'rgba(255, 206, 86, 1)',
+                          'rgba(75, 192, 192, 1)',
+                          'rgba(153, 102, 255, 1)',
+                          'rgba(255, 159, 64, 1)'
+                      ],
+                      borderWidth: 1
+                    }]
+                        },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                    });
+                </script>
+    </div>
+  </div>
+    <div class="col-md-6 bg-light rounded border border-dark">
+      <div class="container">
+      <h3 class="mt-3 fw-bold ms-3 ">Payment - Count chart</h3>
+                <hr>
+                        <canvas class="mt-3 " id="myChart2" width="0" height="200"></canvas>
+                        <script>
+                            var ctx = document.getElementById('myChart2').getContext('2d');
+                            var myChart1 = new Chart(ctx, {
+                                type: 'bar',
+                                data: { 
+                                    labels: ['PayPal','Razorpay','Cash On Delivery'],
+                                datasets: [{
+                                label: 'Delivery Status',
+                                data: ['{{paypal}}','{{razorpay}}','{{cash}}'],
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(153, 102, 255, 1)',
+                                    'rgba(255, 159, 64, 1)'
+                                ],
+                                    borderColor: [
+                                        'rgba(255, 99, 132, 1)',
+                                        'rgba(54, 162, 235, 1)',
+                                        'rgba(255, 206, 86, 1)',
+                                        'rgba(75, 192, 192, 1)',
+                                        'rgba(153, 102, 255, 1)',
+                                        'rgba(255, 159, 64, 1)'
+                                    ],
+                                    borderWidth: 1
+                                  }]
+                                      },
+                                  options: {
+                                      scales: {
+                                          yAxes: [{
+                                              ticks: {
+                                                  beginAtZero: true
+                                              }
+                                          }]
+                                      }
+                                  }
+                                  });
+                              </script>
+    </div>
+  </div>
+  </div>
+</div>
+
+
+{% comment %} modal {% endcomment %}
+<div class="modal fade" id="Modal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form action="admin_add_place" method="POST">
+      {% csrf_token %}
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add New Place</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label data-error="wrong" data-success="right" for="defaultForm-email">Enter New Place</label>
+        <input type="text" id="defaultForm-email" name="input" class="form-control validate">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success">Confirm</button>
+      </div>
+    </div>
+  </form>
+  </div>
+</div>
+    
+    {% endif %}
+    {% endblock content%}
+{% block js %}
+    {% if messages %}
+    {% for msg in messages %}
+    <script>
+    swal('{{msg}}')
+    </script>
+    {% endfor %}
+    {% endif %}
+    
+    {% endblock js %}

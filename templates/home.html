@@ -1,0 +1,146 @@
+{% extends 'home_base.html' %}
+{% load static %}
+{% block content %}
+<style>
+  @media only screen and (max-width: 600px) {
+    .big-caro{
+      display:none;
+    }
+  }
+</style>
+    {% comment %} <section> 
+      <div class="container-fluid banner">
+        <div class="row ">
+          <div class="col-md-6 mt-3 ps-5 text-left caro-text">
+            <h2 class = "pt-5 ps-5">Best Burger in town</h2>
+            <p class = "pt-1 ps-5">Order Now From OkaShi<span>></span></p>
+          </div>
+          <div class="col-md-4 col-sm-12 mt-5 ps-5 caro-img">
+            <img height="400px" width="500px" src="https://img.freepik.com/free-photo/front-view-burger-stand_141793-15542.jpg?w=996&t=st=1665663036~exp=1665663636~hmac=f8a0227d64f4e9d926909a594efd180c2e01b460ab7ce49e04e44c25459c98b8">
+          </div>
+          {% comment %} <div class="col-md-4 col-sm-12 mt-md-5 ps-md-5 caro-img-small">
+            <img height="100px" width="150px" src="https://img.freepik.com/free-photo/front-view-burger-stand_141793-15542.jpg?w=996&t=st=1665663036~exp=1665663636~hmac=f8a0227d64f4e9d926909a594efd180c2e01b460ab7ce49e04e44c25459c98b8">
+          </div> {% endcomment %}
+            {% comment %} <div class="col-md-2 d-flex flex-column pt-5 caro-img border-0 	.d-none .d-lg-block .d-xl-none" style="margin-top:80px; opacity:0.9">
+              <button type="button" class="btn border-0"><img height=60 width=60 src="https://img.freepik.com/premium-vector/cartoon-delicious-big-hamburger-with-cheese-sesame-seeds-isolated-black-background-illustration-vector-design_500890-370.jpg"></button>
+              <button type="button" class="btn  border-0"><img height=60 width=60 src="https://img.freepik.com/premium-vector/slice-melted-pizza-food-cartoon-vector-illustration_695415-133.jpg?w=740"></button>
+              <button type="button" class="btn  border-0"><img height=60 width=60 src="https://img.freepik.com/free-vector/hand-drawn-delicious-shawarma-illustration_23-2148997702.jpg?w=740&t=st=1665663537~exp=1665664137~hmac=642a04be5c8716637811ad49d49da08d4b05476803744e0dbb91cc8649aeee1d"></button>
+            </div> 
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-center mt-5 caro-img">
+        <button type="button" class="btn"><img height=60 width=60 src="https://img.freepik.com/premium-vector/cartoon-delicious-big-hamburger-with-cheese-sesame-seeds-isolated-black-background-illustration-vector-design_500890-370.jpg"></button>
+        <button type="button" class="btn"><img height=60 width=60 src="https://img.freepik.com/premium-vector/slice-melted-pizza-food-cartoon-vector-illustration_695415-133.jpg?w=740"></button>
+        <button type="button" class="btn"><img height=60 width=60 src="https://img.freepik.com/free-vector/hand-drawn-delicious-shawarma-illustration_23-2148997702.jpg?w=740&t=st=1665663537~exp=1665664137~hmac=642a04be5c8716637811ad49d49da08d4b05476803744e0dbb91cc8649aeee1d"></button>
+      </div>
+    </section> {% endcomment %}
+
+    {% comment %} <section class="big-caro">
+      <div class="container-fluid mt-2 rounded-3 border border-3  border-light">
+
+            <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <div class="row">
+                    <div class="col pt-5">
+                      <a href="/home_res" style="color:inherit; text-decoration:none;">
+                      <h2 style="font-size:60px;" class = "pt-5 ps-5">Get Best Food In The Town</h2>
+                      <p style="font-size:40px;" class = "pt-1 ps-5">Order Now From Fudo<span>></span></p>
+                      </a>
+                    </div>
+                    <div class="col">
+                  <img  src="https://img.freepik.com/free-vector/safe-food-delivery-order-receive_23-2148549716.jpg?size=626&ext=jpg&ga=GA1.2.477335526.1664608211&semt=sph">
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <div class="row">
+                    <div class="col pt-5">
+                      <a href="/home_res"  style="color:inherit; text-decoration:none;">
+                      <h2 style="font-size:60px;" class = "pt-5 ps-5">Get Food Delivered In 5 Minutes</h2>
+                      <p style="font-size:40px;" class = "pt-1 ps-5">Order Now From Fudo<span>></span></p>
+                      </a>
+                    </div>
+                    <div class="col">
+                  <img  src="https://img.freepik.com/free-vector/take-away-concept-illustration_114360-2982.jpg?size=626&ext=jpg&ga=GA1.2.477335526.1664608211&semt=sphs">
+                </div>
+              </div>
+              </div>
+                <div class="carousel-item">
+                  <div class="row">
+                    <div class="col pt-5">
+                      <a href="/home_res"  style="color:inherit; text-decoration:none;">
+                      <h2 style="font-size:60px;" class = "pt-5 ps-5">Get Wide Variety Of Food</h2>
+                      <p style="font-size:40px;" class = "pt-1 ps-5">Order Now From Fudo<span>></span></p>
+                      </a>
+                    </div>
+                    <div class="col">
+                  <img  src="https://img.freepik.com/free-vector/order-food-concept-illustration_114360-6860.jpg?size=432&ext=jpg&ga=GA1.2.477335526.1664608211&semt=sph">
+                </div>
+              </div>
+              </div>
+            </div>
+          </div>
+  </section>  {% endcomment %}
+ 
+    {% comment %} Restaurants section {% endcomment %}
+    <section>
+      <h2 class="ms-md-5 ps-md-5 mt-4" style="font-size:40px;">Our Featured Hubs</h2>
+      
+      <section>
+        
+        <div class="container py-5">
+          <div class="row ms-md-5 ms-2">
+            {% for det in details %}
+            {% if det.is_approved %}
+            <div class="col-lg-4 col-md-12 mb-4">
+              <a href="home_det/{{det.id}}">
+              <div class="card card-det border-0" style="border-radius:20px; height:370px; width:300px;">
+                <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
+                  data-mdb-ripple-color="light">
+                  <img height=200 width=100 src="{{det.image.url}}" alt="Image Not Found"
+                    class="w-100" />
+                  <a href="">
+                    <div class="mask">
+                      {% comment %} <div class="d-flex justify-content-start align-items-end h-100">
+                        <h5><span class="badge bg-primary ms-md-2 ms-xs-2">New</span></h5>
+                      </div> {% endcomment %}
+                    </div>
+                    <div class="hover-overlay">
+                      <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                    </div>
+                  </a>
+                </div>
+                <div class="card-body crd">
+                  
+                    <h3 class="card-title mb-3">{{det.name}}</h3>
+                  
+                  
+                    <h5>{{det.category}}</h5>
+                  <div class="row">
+                    <div class="d-flex pe-4 me-4">
+                  <h6 class="">Rating: {{det.rating}}</h6><img height='20' width='24' src="https://cdn-icons-png.flaticon.com/512/2893/2893811.png" class="ps-1" alt="...">
+                  </div>
+                </div>
+                </div>
+              </div>
+            </div>
+          </a>
+          {% else %}
+
+          {% endif %}
+            {% endfor %}
+          </div>
+          <div>
+            
+      </section>
+      
+    </section>
+    {% endblock content %}
+
+{% block js %}
+
+{% endblock js %}
+    
+    <script src="" async defer></script>
