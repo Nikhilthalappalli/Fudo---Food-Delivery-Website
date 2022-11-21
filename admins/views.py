@@ -301,6 +301,30 @@ def admin_coupon_unblock(request,id):
     coupon.save()
     return redirect(admin_coupon)
 
+def admin_coupon_delete(request,id):
+    offer = Coupon.objects.get(id=id)
+    offer.delete()
+    return redirect(admin_coupon)
+
+def admin_coupon_edit(request,id):
+    coupon = Coupon.objects.get(id=id)
+    name = request.POST['name']
+    code = request.POST['code']
+    max_amount = request.POST['max_amount']
+    discount_amount = request.POST['discount_amount']
+    # start_date = request.POST['start_date']
+    # end_date = request.POST['end_date']
+    
+    coupon.name = name
+    coupon.code = code
+    coupon.max_amount = max_amount
+    coupon.discount_amount = discount_amount
+    # coupon.start_date = start_date
+    # coupon.end_date  = end_date
+    coupon.save()
+    
+    return redirect(admin_coupon)
+
 def admin_offer_block(request,id):
     offer = Category_offers.objects.get(id=id)
     offer.is_active=False
@@ -317,6 +341,8 @@ def admin_offer_delete(request,id):
     offer = Category_offers.objects.get(id=id)
     offer.delete()
     return redirect(admin_offers)
+
+
 
 def admin_sales_filter(request):
     print(request.method)
