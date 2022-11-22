@@ -12,7 +12,7 @@ import razorpay
 from home.models import Category
 
 import restaurant
-from restaurant.models import Category_offers, Coupon, Old_cart_item, Order, Restaurants
+from restaurant.models import Category_offers, Coupon, Menu, Old_cart_item, Order, Restaurants
 from account.models import Place, User_det
 from django.core.paginator import Paginator
 
@@ -35,6 +35,11 @@ def admin_dash(request):
         app_count = Restaurants.objects.filter(is_approved=True).count()
         restaurant = Restaurants.objects.all()
         cart_item = Old_cart_item.objects.all()
+        res = Restaurants.objects.all()
+        a=[]
+        for i in res:
+            x = Menu.objects.filter(restaurant=i).count()
+            a.append(x)
         cat = Category.objects.all()
         order = Order.objects.all().order_by('id')
         paypal = Order.objects.filter(payment='PayPal').count()
@@ -43,7 +48,8 @@ def admin_dash(request):
         context = {'cat':cat,'user_count':user_count,'res_count':res_count,
                    'app_count':app_count,'restaurant':restaurant,
                    'order':order,'cart_item':cart_item,
-                   'paypal':paypal,'razorpay':razorpay,'cash':cash}
+                   'paypal':paypal,'razorpay':razorpay,'cash':cash,
+                   'res':res,'a':a}
         return render(request,'admin_dashboard.html',context)
     return redirect(admin_log)
 
