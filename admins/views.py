@@ -1,12 +1,10 @@
 
-import re
-from unicodedata import category
+
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User, auth
 # from django.contrib.auth import authenticate, login ,logout
 from django.contrib import messages
 from django.views.decorators.cache import never_cache
-from numpy import require
 import razorpay
 
 from home.models import Category
@@ -136,7 +134,7 @@ def admin_insert(request):
                 messages.info(request,'Username is alreadey Taken')
                 return redirect('admin_ins')
             elif User.objects.filter(email=email).exists():
-                messages.info("The email is already exists..")
+                messages.info(request,"The email is already exists..")
                 return redirect('admin_ins')
             else:
                 user = User.objects.create_user(username=username, password = password1, email=email, first_name=first_name, last_name=last_name,is_superuser=adm)

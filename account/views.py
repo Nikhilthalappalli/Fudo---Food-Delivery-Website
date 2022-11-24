@@ -55,7 +55,7 @@ def user_register(request):
                 messages.info(request,'Email Already Exits')
                 return redirect('user_register')
             elif User_det.objects.filter(phone=phone).exists():
-                messages.info("The Number already exists..")
+                messages.info(request,"The Number already exists..")
                 return redirect('user_register')
             else:
                 otp=1

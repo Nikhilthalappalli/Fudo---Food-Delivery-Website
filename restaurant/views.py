@@ -1,10 +1,7 @@
 
-import re
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
-from numpy import place, require
-from requests import ReadTimeout, request
 from account.models import Place
 
 from admins.views import admin_logout

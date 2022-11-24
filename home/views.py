@@ -283,7 +283,7 @@ def home_cart(request):
                 return render(request, 'home_cart.html',{'cart_item':cart_item,'total':total,'delivery':delivery,'grand_total':grand_total,'cart':cart})
             empty = "Cart Is Empty"
             return render(request,'home_cart.html',{"emplty":empty})
-    return render(home)
+    return redirect(home)
         
     
 def add_to_cart(request,id1,id):
@@ -363,13 +363,29 @@ def up_quantity(request,id):
     user = request.user.user_det
     cart1 = Cart.objects.get(user=user)
     cart = Cart_item.objects.get(id=id)
+    res = cart1.restaurant
     cart.quantity = cart.quantity+1
     cart.save()
     qty = cart.quantity
+    try:
+        res_offer = Restaurant_offers.objects.get(restaurant=res)
+    except:
+        res_offer = None
+    cat_offer = Category_offers.objects.all()
     cart_item = Cart_item.objects.filter(cart=cart1)
     total = 0
     for i in range(len(cart_item)):
-            x = int(cart_item[i].offer_price)*int(cart_item[i].quantity)
+        if res_offer:
+            off_price = cart_item[i].item.price *(res_offer.offer_percentage/100)
+            if off_price > res_offer.offer_max_amount:
+                off_price = cart_item[i].item.price - res_offer.offer_max_amount
+            else:
+                off_price = cart_item[i].item.price - off_price
+        if res_offer and cat_offer:
+            if off_price > cart_item[i].offer_price:
+                cart_item[i].offer_price = off_price
+        else:
+            x = int(cart_item[i].item.price)*int(cart_item[i].quantity)
             total = int(total + x)
     delivery = 50
     grand_total = int(total+delivery)
@@ -383,13 +399,29 @@ def down_quantity(request,id):
     user = request.user.user_det
     cart1 = Cart.objects.get(user=user)
     cart = Cart_item.objects.get(id=id)
+    res = cart1.restaurant
     cart.quantity = cart.quantity-1
     cart.save()
     qty = cart.quantity
     cart_item = Cart_item.objects.filter(cart=cart1)
+    try:
+        res_offer = Restaurant_offers.objects.get(restaurant=res)
+    except:
+        res_offer = None
+    cat_offer = Category_offers.objects.all()
     total = 0
     for i in range(len(cart_item)):
-            x = int(cart_item[i].offer_price)*int(cart_item[i].quantity)
+        if res_offer:
+            off_price = cart_item[i].item.price *(res_offer.offer_percentage/100)
+            if off_price > res_offer.offer_max_amount:
+                off_price = cart_item[i].item.price - res_offer.offer_max_amount
+            else:
+                off_price = cart_item[i].item.price - off_price
+        if res_offer and cat_offer:
+            if off_price > cart_item[i].offer_price:
+                cart_item[i].offer_price = off_price
+        else:
+            x = int(cart_item[i].item.price)*int(cart_item[i].quantity)
             total = int(total + x)
     delivery = 50
     grand_total = int(total+delivery)

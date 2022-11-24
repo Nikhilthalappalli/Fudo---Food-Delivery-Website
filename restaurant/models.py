@@ -1,9 +1,4 @@
 
-
-from email.policy import default
-from pyexpat import model
-from unicodedata import category
-from xmlrpc.client import Boolean
 from django.contrib.auth.models import User, auth
 from django.db import models
 from account.models import Place, User_det
