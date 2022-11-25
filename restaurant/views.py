@@ -278,3 +278,8 @@ def res_offer_unblock(request,id):
     offer.is_active=True
     offer.save()
     return redirect(res_offers)
+
+def res_offer_delete(request,id):
+    offer = Restaurant_offers.objects.get(id=id)
+    offer.delete()
+    return redirect(res_offers)

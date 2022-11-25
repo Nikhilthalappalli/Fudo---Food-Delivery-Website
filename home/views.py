@@ -109,11 +109,14 @@ def home_cat_both(request):
 def home_cat(request,id1,id):
     if request.user.is_authenticated:
         res = Restaurants.objects.get(id=id1)
-        print(res.name)
         cat = Category.objects.all()
-        cate = Category.objects.get(id=id)
+        if id == 0:
+            return redirect(home_det,id1)
+        else:
+            cate = Category.objects.get(id=id)
+            menu = Menu.objects.filter(food_category=cate).filter(restaurant=res)
         # menus = res.menu_set.all()
-        menu = Menu.objects.filter(food_category=cate).filter(restaurant=res)
+        
         return render(request,'restaurant_det.html',{'menus':menu,'res':res,'category':cat})
     
         
@@ -371,10 +374,18 @@ def up_quantity(request,id):
         res_offer = Restaurant_offers.objects.get(restaurant=res)
     except:
         res_offer = None
+    print(res_offer)
     cat_offer = Category_offers.objects.all()
     cart_item = Cart_item.objects.filter(cart=cart1)
     total = 0
     for i in range(len(cart_item)):
+        for offer in cat_offer:
+            if cart_item[i].item.food_category == offer.category:
+                off_price = cart_item[i].item.price * (offer.offer_percentage/100)
+                if off_price > offer.offer_max_amount:
+                    cart_item[i].offer_price = cart_item[i].item.price - offer.offer_max_amount
+                else:
+                    cart_item[i].offer_price = cart_item[i].item.price - off_price
         if res_offer:
             off_price = cart_item[i].item.price *(res_offer.offer_percentage/100)
             if off_price > res_offer.offer_max_amount:
@@ -384,6 +395,9 @@ def up_quantity(request,id):
         if res_offer and cat_offer:
             if off_price > cart_item[i].offer_price:
                 cart_item[i].offer_price = off_price
+        if cart_item[i].offer_price !=0:
+            x = int(cart_item[i].offer_price)*int(cart_item[i].quantity)
+            total = int(total + x)
         else:
             x = int(cart_item[i].item.price)*int(cart_item[i].quantity)
             total = int(total + x)
@@ -411,6 +425,13 @@ def down_quantity(request,id):
     cat_offer = Category_offers.objects.all()
     total = 0
     for i in range(len(cart_item)):
+        for offer in cat_offer:
+            if cart_item[i].item.food_category == offer.category:
+                off_price = cart_item[i].item.price * (offer.offer_percentage/100)
+                if off_price > offer.offer_max_amount:
+                    cart_item[i].offer_price = cart_item[i].item.price - offer.offer_max_amount
+                else:
+                    cart_item[i].offer_price = cart_item[i].item.price - off_price
         if res_offer:
             off_price = cart_item[i].item.price *(res_offer.offer_percentage/100)
             if off_price > res_offer.offer_max_amount:
@@ -420,6 +441,9 @@ def down_quantity(request,id):
         if res_offer and cat_offer:
             if off_price > cart_item[i].offer_price:
                 cart_item[i].offer_price = off_price
+        if cart_item[i].offer_price !=0:
+            x = int(cart_item[i].offer_price)*int(cart_item[i].quantity)
+            total = int(total + x)
         else:
             x = int(cart_item[i].item.price)*int(cart_item[i].quantity)
             total = int(total + x)

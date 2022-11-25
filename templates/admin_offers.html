@@ -138,13 +138,13 @@
                     <div class="col">
                     <div class="modal-body">
                         <label data-error="wrong" data-success="right" for="defaultForm-email">Start Date</label>
-                        <input type="date" id="defaultForm-email" name="start_date" class="form-control validate">
+                        <input type="date" id="start" name="start_date" class="form-control validate">
                       </div>
                     </div>
                     <div class="col">
                       <div class="modal-body">
                         <label data-error="wrong" data-success="right" for="defaultForm-email">End Date</label>
-                        <input type="date" id="defaultForm-email" name="end_date" class="form-control validate">
+                        <input type="date" id="end" name="end_date" class="form-control validate">
                       </div>
                     </div>
                 </div>
@@ -161,6 +161,33 @@
         {% endblock content%}
 
         {% block js %}
+        <script>
+          $("#start").on("change", function () {
+              $("#end").attr("min", $(this).val());
+         });
+        </script>
+        <script>
+          $(document).ready(function () {
+              let today = new Date()
+              var dd = today.getDate();
+              var mm = today.getMonth() + 1;
+        
+              var yyyy = today.getFullYear();
+              if (dd < 10) {
+                  dd = '0' + dd;
+              }
+              if (mm < 10) {
+                  mm = '0' + mm;
+              }
+              today = yyyy + '-' + mm + '-' + dd;
+        
+              $('#start').attr('min', today)
+              $('#start').change(function () {
+                  let date = document.getElementById('start').value
+                  $('#exp').attr('min', date)
+              })
+            })
+        </script>
         {% if messages %}
         {% for msg in messages %}
         <script>

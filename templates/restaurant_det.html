@@ -36,8 +36,9 @@
                       <span class="visually-hidden">Toggle Dropdown</span>
                     </button>
                     <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="/home_det/{{res.id}}">All</a></li>
                         {% for cat in category %}
-                      <li><a class="dropdown-item" href="{{res.id}}/home_cat/{{cat.id}}">{{cat.cat_name}}</a></li>
+                      <li><a class="dropdown-item" href="/home_det/{{res.id}}/home_cat/{{cat.id}}">{{cat.cat_name}}</a></li>
                       {% endfor %}
                       {% comment %} <li><hr class="dropdown-divider"></li> {% endcomment %}
                     </ul>
@@ -46,7 +47,7 @@
             </div>
             </div>
             <p class = "pt-1 ps-5"><span>{{res.address}}</span></p>
-            {% if res_offers and res_offers.status == True %}
+            {% if res_offers and res_offers.is_active == True %}
             <h4 class = "pt-1 ps-5" style="color:red"><span class="bg-danger rounded " style="font-size:25px;color:white;">&nbsp;{{res_offers.offer_name}},Get {{res_offers.offer_percentage}}% upto ₹{{res_offers.offer_max_amount}} &nbsp;</span></h4>
             {% endif %}
           </div>
@@ -73,7 +74,7 @@
                     <div class="card-body">
                       <h5 class="card-title">{{item.item_name}}</h5>
                       <p class="card-text">{{item.food_category.cat_name}}</p>
-                      <p class="card-text"><small class="text-muted">Price: ₹{{item.price}}{% for cat_offer in cat_offers %} {% if item.food_category == cat_offer.category and cat_offer.status == True %}| <span class="bg-danger rounded text-white">&nbsp; {{cat_offer.offer_percentage}}% off&nbsp; <span>{% endif %}{% endfor %}</small></p>
+                      <p class="card-text"><small class="text-muted">Price: ₹{{item.price}}{% for cat_offer in cat_offers %} {% if item.food_category == cat_offer.category and cat_offer.is_active == True %}| <span class="bg-danger rounded text-white">&nbsp; {{cat_offer.offer_percentage}}% off&nbsp; <span>{% endif %}{% endfor %}</small></p>
                       <div class=" ms-4">
                       <a href="{{res.id}}/home_cat_add/{{item.id}}"><button type="button" class="btn btn-dark">Add To Cart</button></a>
                     </div>
@@ -131,7 +132,7 @@
                 <div class="card-body">
                   <h5 style="font-size:15px;" class="card-title">{{item.item_name}}</h5>
                   <p style="font-size:15px;" class="card-text">{{item.food_category.cat_name}}</p>
-                  <p style="font-size:14px;" class="card-text"><small class="text-muted">Price: ₹{{item.price}}{% for cat_offer in cat_offers %} {% if item.food_category == cat_offer.category %}| <span class="bg-danger rounded text-white">&nbsp; {{cat_offer.offer_percentage}}% off&nbsp; <span>{% endif %}{% endfor %}</small></p>
+                  <p style="font-size:14px;" class="card-text"><small class="text-muted">Price: ₹{{item.price}}{% for cat_offer in cat_offers %} {% if item.food_category == cat_offer.category and cat_offer.is_active == True %}| <span class="bg-danger rounded text-white">&nbsp; {{cat_offer.offer_percentage}}% off&nbsp; <span>{% endif %}{% endfor %}</small></p>
                   <div class=" ms-4">
                   <a href="{{res.id}}/home_cat_add/{{item.id}}"><button type="button" style="font-size:12px;" class="btn btn-dark">Add To Cart</button></a>
                 </div>

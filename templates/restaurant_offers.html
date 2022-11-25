@@ -28,12 +28,13 @@
                 {% comment %} <th scope="col">Last Login</th> {% endcomment %}
                 {% comment %} <th scope="col">Password</th> {% endcomment %}
                 <th scope="col">Block</th>
+                <th scope="col">Delete</th>
                 {% comment %} <th scope="col">Delete</th> {% endcomment %}
               </tr>
             </thead>
             <tbody>
+              {% for offer in offers %}
               <tr class="table-info">
-                {% for offer in offers %}
                 <td></td>
                 <td>{{offer.offer_name}}</td>
                 <td>{{offer.offer_percentage}}</td>
@@ -45,6 +46,7 @@
                 {% else %}
                 <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Modal3{{offer.id}}">Un Block</button></td>
                 {% endif %}
+                <td><button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#Modal4{{offer.id}}">Delete</button></td>
             </tr>
             <div class="modal fade" id="Modal1{{offer.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered">
@@ -80,6 +82,24 @@
                 </div>
               </div>
             </div>  
+
+            <div class="modal fade" id="Modal4{{offer.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Un Block</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    Are You Sure...
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a href="res_offer_delete/{{offer.id}}"><button type="button" class="btn btn-primary">Confirm</button></a>
+                  </div>
+                </div>
+              </div>
+            </div> 
               {% endfor %}
             </tbody>
           </table>
@@ -111,13 +131,13 @@
           <div class="col">
           <div class="modal-body">
               <label data-error="wrong" data-success="right" for="defaultForm-email">Start Date</label>
-              <input type="date" id="defaultForm-email" name="start_date" class="form-control validate">
+              <input type="date" id="start" name="start_date" class="form-control validate">
             </div>
           </div>
           <div class="col">
             <div class="modal-body">
               <label data-error="wrong" data-success="right" for="defaultForm-email">End Date</label>
-              <input type="date" id="defaultForm-email" name="end_date" class="form-control validate">
+              <input type="date" id="end" name="end_date" class="form-control validate">
             </div>
           </div>
       </div>
@@ -133,7 +153,33 @@
 {% endblock content %}
 
 {% block js %}
+<script>
+  $("#start").on("change", function () {
+      $("#end").attr("min", $(this).val());
+ });
+</script>
+<script>
+  $(document).ready(function () {
+      let today = new Date()
+      var dd = today.getDate();
+      var mm = today.getMonth() + 1;
 
+      var yyyy = today.getFullYear();
+      if (dd < 10) {
+          dd = '0' + dd;
+      }
+      if (mm < 10) {
+          mm = '0' + mm;
+      }
+      today = yyyy + '-' + mm + '-' + dd;
+
+      $('#start').attr('min', today)
+      $('#start').change(function () {
+          let date = document.getElementById('start').value
+          $('#exp').attr('min', date)
+      })
+    })
+</script>
           {% comment %} {% else %} {% endcomment %}
         {% comment %} {% endif %}  {% endcomment %}
         {% if messages %}

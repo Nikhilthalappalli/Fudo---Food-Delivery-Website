@@ -26,7 +26,8 @@ urlpatterns = [
     path('not_prepared/<int:id>',views.res_not_prepred,name='res_not_prepared'),
     path('res_delivery_stat/<int:id>',views.res_delivery_stat,name='res_delivery_stat'),
     path("res_offers",views.res_offers,name='res_offers'),
-    path('res_offer_block',views.res_offer_block,name='res_offer_block'),
-    path('res_offer_unblock',views.res_offer_unblock,name='res_offer_unblock'),
+    path('res_offer_block/<int:id>',views.res_offer_block,name='res_offer_block'),
+    path('res_offer_unblock/<int:id>',views.res_offer_unblock,name='res_offer_unblock'),
+    path('res_offer_delete/<int:id>',views.res_offer_delete,name="res_offer_delete"),
 ]
     
